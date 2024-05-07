@@ -1,6 +1,6 @@
 /* header and nav layout */
 header .nav-wrapper {
-  background-color: var(--background-color);
+  background-color: var(--header-background-color);
   width: 100%;
   z-index: 2;
   position: fixed;
@@ -15,7 +15,7 @@ header nav {
   align-items: center;
   gap: 0 2em;
   margin: auto;
-  max-width: 1264px;
+  max-width: 1020px;
   height: var(--nav-height);
   padding: 0 1rem;
   font-family: var(--body-font-family);
@@ -141,15 +141,60 @@ header nav[aria-expanded="true"] .nav-hamburger-icon::after {
 /* brand */
 header .nav-brand {
   grid-area: brand;
-  flex-basis: 128px;
-  font-size: var(--heading-font-size-s);
-  font-weight: 700;
+  font-size: var(--heading-font-size-m);
+  font-weight: 500;
   line-height: 1;
 }
 
 header nav .nav-brand img {
   width: 128px;
   height: auto;
+}
+
+header nav .brand-logo {
+  display: flex;
+  align-items: center;
+}
+
+header nav .brand-logo div {
+  color: #FFF;
+  padding: 0 1em 0;
+}
+
+header nav .search-header {
+  position: relative;
+  padding: 0;
+}
+
+header nav .search-header label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+header nav .search-header input {
+  position: relative;
+  border: none;
+  padding: 9px 12px;
+  max-width: 240px;
+  background: var(--background-color);
+  outline: none;
+}
+
+header nav .search-header button {
+  position: absolute;
+  top: 0.5em;
+  bottom: 0;
+  right: 4px;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
 }
 
 /* sections */
