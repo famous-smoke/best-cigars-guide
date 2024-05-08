@@ -14,6 +14,8 @@
   /* colors */
   --link-color: #035fe6;
   --link-hover-color: #136ff6;
+  --header-color: #2c2c2c;
+  --paragraph-color: #4a4a4a;
   --background-color: white;
   --light-color: #eee;
   --dark-color: #ccc;
@@ -85,6 +87,7 @@ h4, h5, h6 {
   margin-top: 1em;
   margin-bottom: .5em;
   scroll-margin: calc(var(--nav-height) + 1em);
+  color: var(--header-color);
 }
 
 h1 { font-size: var(--heading-font-size-xxl) }
@@ -97,6 +100,10 @@ h6 { font-size: var(--heading-font-size-xs) }
 p, dl, ol, ul, pre, blockquote {
   margin-top: 1em;
   margin-bottom: 1em;
+}
+
+p {
+  color: var(--paragraph-color);
 }
 
 code, pre {
