@@ -21,7 +21,7 @@
   --text-color: black;
 
   /* fonts */
-  --body-font-family: Montserrat, 'Montserrat Fallback', sans-serif;
+  --body-font-family: montserrat, 'Montserrat Fallback', sans-serif;
   --heading-font-family: var(--body-font-family);
   --fixed-font-family: var(--body-font-family);
 
@@ -41,6 +41,7 @@
   /* nav height */
   --nav-height: 90px;
 
+  /* content width */
   --content-width: 1020px;
 }
 
