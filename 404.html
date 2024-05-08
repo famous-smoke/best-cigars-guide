@@ -12,8 +12,9 @@
   <script src="/best-cigars-guide/scripts/scripts.js" type="module" crossorigin="use-credentials"></script>
   <script type="module">
     import { sampleRUM } from '/best-cigars-guide/scripts/aem.js';
+    import { loadFragment } from '/best-cigars-guide/blocks/fragment/fragment.js';
 
-    window.addEventListener('load', () => {
+    window.addEventListener('load', async() => {
       if (document.referrer) {
         const { origin, pathname } = new URL(document.referrer);
         if (origin === window.location.origin) {
@@ -27,6 +28,8 @@
         }
       }
       sampleRUM('404', { source: document.referrer, target: window.location.href });
+      const main = document.querySelector('main');
+      main.replaceWith(await loadFragment('/best-cigars-guide/fragments/404'));
     });
   </script>
   <link rel="stylesheet" href="/best-cigars-guide/styles/styles.css">
