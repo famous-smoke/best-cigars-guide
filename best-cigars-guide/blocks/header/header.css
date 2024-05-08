@@ -11,14 +11,12 @@ header nav {
   display: grid;
   grid-template:
     'hamburger brand tools' var(--nav-height)
-    'sections sections sections' 1fr / auto 1fr auto;
+    'sections sections sections' 1fr / auto 1fr 30%;
   align-items: center;
-  gap: 0 2em;
   margin: auto;
-  max-width: 1020px;
+  max-width: var(--content-width);
   height: var(--nav-height);
   padding: 0 1rem;
-  font-family: var(--body-font-family);
 }
 
 header nav[aria-expanded="true"] {
@@ -30,18 +28,15 @@ header nav[aria-expanded="true"] {
   min-height: 100vh;
 }
 
-@media (width >= 600px) {
+@media (width <= 600px) {
   header nav {
-    padding: 0 2rem;
+    grid-template:
+      'brand' calc(var(--nav-height) / 2)
+      'tools' auto
   }
 }
 
 @media (width >= 900px) {
-  header nav {
-    display: flex;
-    justify-content: space-between;
-  }
-
   header nav[aria-expanded="true"] {
     min-height: 0;
     overflow: visible;
@@ -181,7 +176,7 @@ header nav .search-header input {
   position: relative;
   border: none;
   padding: 9px 12px;
-  max-width: 240px;
+  width: 100%;
   background: var(--background-color);
   outline: none;
 }
