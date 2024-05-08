@@ -1,9 +1,12 @@
 # Famous Smoke Shop Best Cigars Guide
 Find the best recommended Cigars by year, occasion, shape, size, country, food pairing, and more. 
 
+## Production url
+- https://www.famous-smoke.com/best-cigars-guide/
+
 ## AEM Preview Environments
-- Preview: https://main--best-cigars-guide--famous-smoke.hlx.page/
-- Live: https://main--best-cigars-guide--famous-smoke.hlx.live/
+- Preview: https://main--best-cigars-guide--famous-smoke.hlx.page/best-cigars-guide
+- Live: https://main--best-cigars-guide--famous-smoke.hlx.live/best-cigars-guide
 
 ## Installation
 
