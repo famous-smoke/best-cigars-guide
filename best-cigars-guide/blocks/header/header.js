@@ -93,7 +93,7 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
 export default async function decorate(block) {
   // load nav as fragment
   const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
+  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/best-cigars-guide/nav';
   const fragment = await loadFragment(navPath);
 
   // decorate nav DOM
@@ -108,15 +108,19 @@ export default async function decorate(block) {
     if (section) section.classList.add(`nav-${c}`);
   });
 
+  // Famous Smoke Shop logo
   const navBrand = nav.querySelector('.nav-brand');
-  const brandLink = navBrand.querySelector('.button');
-  if (brandLink) {
-    brandLink.className = '';
-    brandLink.closest('.button-container').className = '';
-  }
+  const navText = navBrand.innerHTML;
+  navBrand.innerHTML = `
+  <a href="/best-cigars-guide" rel="home" class="brand-logo" title="Best Cigars Guide Homepage">
+    <img src="/best-cigars-guide/icons/famous-smoke-shop-logo.svg" alt="Famous Smoke Shop Logo">
+    ${navText}
+  </a>
+  `;
 
+  // Build submenu links (if they exist)
   const navSections = nav.querySelector('.nav-sections');
-  if (navSections) {
+  if (navSections && navSections.length > 0) {
     navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
       if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
       navSection.addEventListener('click', () => {
@@ -127,21 +131,37 @@ export default async function decorate(block) {
         }
       });
     });
-  }
 
-  // hamburger for mobile
-  const hamburger = document.createElement('div');
-  hamburger.classList.add('nav-hamburger');
-  hamburger.innerHTML = `<button type="button" aria-controls="nav" aria-label="Open navigation">
+    const hamburger = document.createElement('div');
+    hamburger.classList.add('nav-hamburger');
+    hamburger.innerHTML = `<button type="button" aria-controls="nav" aria-label="Open navigation">
       <span class="nav-hamburger-icon"></span>
     </button>`;
-  hamburger.addEventListener('click', () => toggleMenu(nav, navSections));
-  nav.prepend(hamburger);
-  nav.setAttribute('aria-expanded', 'false');
-  // prevent mobile nav behavior on window resize
-  toggleMenu(nav, navSections, isDesktop.matches);
-  isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
+    hamburger.addEventListener('click', () => toggleMenu(nav, navSections));
+    nav.prepend(hamburger);
+    nav.setAttribute('aria-expanded', 'false');
+    // prevent mobile nav behavior on window resize
+    toggleMenu(nav, navSections, isDesktop.matches);
+    isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
+  }
 
+  // Site search box
+  const navTools = nav.querySelector('.nav-tools');
+  const searchBox = document.createElement('div');
+  searchBox.id = 'site-search';
+  searchBox.className = 'site-search';
+  searchBox.innerHTML = `
+  <form role="search" action="/best-cigars-guide/search" class="search search-header">
+    <label for="header-search-term">Search</label>
+    <input type="search" id="header-search-term" maxlength="255" placeholder="Search" name="s" autocomplete="off">
+    <button type="submit" class="search-submit" value="Submit" title="Submit">
+      <span class="icon icon-search"><img data-icon-name="search" src="/best-cigars-guide/icons/search.svg" alt="Search" title="Search" loading="lazy"></span>
+    </button>
+  </form>
+  `;
+  navTools.innerHTML = searchBox.innerHTML;
+
+  // Wrap it up!
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
