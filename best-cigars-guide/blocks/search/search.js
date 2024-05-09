@@ -13,7 +13,7 @@ function findNextHeading(el) {
     const lastHeading = [...preceedingEl.querySelectorAll('h1, h2, h3, h4, h5, h6')].pop();
     if (lastHeading) {
       const level = parseInt(lastHeading.nodeName[1], 10);
-      h = level < 6 ? `H${ level + 1 }` : 'H6';
+      h = level < 6 ? `H${level + 1}` : 'H6';
       preceedingEl = false;
     } else {
       preceedingEl = preceedingEl.previousElement || preceedingEl.parentElement;
@@ -27,12 +27,12 @@ function highlightTextElements(terms, elements) {
     if (!element || !element.textContent) return;
 
     const matches = [];
-    const {textContent} = element;
+    const { textContent } = element;
     terms.forEach((term) => {
       let start = 0;
       let offset = textContent.toLowerCase().indexOf(term.toLowerCase(), start);
       while (offset >= 0) {
-        matches.push({offset, term: textContent.substring(offset, offset + term.length)});
+        matches.push({ offset, term: textContent.substring(offset, offset + term.length) });
         start = offset + term.length;
         offset = textContent.toLowerCase().indexOf(term.toLowerCase(), start);
       }
@@ -44,7 +44,7 @@ function highlightTextElements(terms, elements) {
 
     matches.sort((a, b) => a.offset - b.offset);
     let currentIndex = 0;
-    const fragment = matches.reduce((acc, {offset, term}) => {
+    const fragment = matches.reduce((acc, { offset, term }) => {
       if (offset < currentIndex) return acc;
       const textBefore = textContent.substring(currentIndex, offset);
       if (textBefore) {
@@ -90,7 +90,7 @@ function renderResult(result, searchTerms, titleTag) {
   if (result.image) {
     const wrapper = document.createElement('div');
     wrapper.className = 'search-result-image';
-    const pic = createOptimizedPicture(result.image, '', false, [{width: '375'}]);
+    const pic = createOptimizedPicture(result.image, '', false, [{ width: '375' }]);
     wrapper.append(pic);
     a.append(wrapper);
   }
@@ -166,7 +166,7 @@ function filterData(searchTerms, data) {
     });
 
     if (minIdx >= 0) {
-      foundInHeader.push({minIdx, result});
+      foundInHeader.push({ minIdx, result });
       return;
     }
 
@@ -178,7 +178,7 @@ function filterData(searchTerms, data) {
     });
 
     if (minIdx >= 0) {
-      foundInMeta.push({minIdx, result});
+      foundInMeta.push({ minIdx, result });
     }
   });
 
@@ -259,7 +259,7 @@ export default async function decorate(block) {
   const source = block.querySelector('a[href]') ? block.querySelector('a[href]').href : '/query-index.json';
   block.innerHTML = '';
   block.append(
-    searchBox(block, {source, placeholders}),
+    searchBox(block, { source, placeholders }),
     searchResultsContainer(block),
   );
 
