@@ -28,11 +28,15 @@ header nav[aria-expanded="true"] {
   min-height: 100vh;
 }
 
-@media (width <= 600px) {
+@media (max-width: 600px) {
   header nav {
     grid-template:
-      'brand' calc(var(--nav-height) / 2)
+      'brand' auto
       'tools' auto
+  }
+
+  header nav p {
+    font-size: 0.8em;
   }
 
   header nav .brand-logo {
@@ -44,7 +48,7 @@ header nav[aria-expanded="true"] {
   }
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
   header nav[aria-expanded="true"] {
     min-height: 0;
     overflow: visible;
@@ -135,7 +139,7 @@ header nav[aria-expanded="true"] .nav-hamburger-icon::after {
   transform: rotate(-45deg);
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
   header nav .nav-hamburger {
     display: none;
     visibility: hidden;
@@ -234,7 +238,7 @@ header nav .nav-sections ul > li > ul > li {
   font-weight: 500;
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
   header nav .nav-sections {
     display: block;
     visibility: visible;
