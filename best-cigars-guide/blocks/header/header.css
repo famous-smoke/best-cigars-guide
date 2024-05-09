@@ -1,6 +1,6 @@
 /* header and nav layout */
 header .nav-wrapper {
-  background-color: var(--background-color);
+  background-color: var(--header-background-color);
   width: 100%;
   z-index: 2;
   position: fixed;
@@ -11,14 +11,12 @@ header nav {
   display: grid;
   grid-template:
     'hamburger brand tools' var(--nav-height)
-    'sections sections sections' 1fr / auto 1fr auto;
+    'sections sections sections' 1fr / auto 1fr 30%;
   align-items: center;
-  gap: 0 2em;
   margin: auto;
-  max-width: 1264px;
+  max-width: var(--content-width);
   height: var(--nav-height);
   padding: 0 1rem;
-  font-family: var(--body-font-family);
 }
 
 header nav[aria-expanded="true"] {
@@ -30,18 +28,27 @@ header nav[aria-expanded="true"] {
   min-height: 100vh;
 }
 
-@media (width >= 600px) {
+@media (max-width: 600px) {
   header nav {
-    padding: 0 2rem;
+    grid-template:
+      'brand' auto
+      'tools' auto
+  }
+
+  header nav p {
+    font-size: 0.8em;
+  }
+
+  header nav .brand-logo {
+    flex-flow: column;
+  }
+
+  header nav .nav-brand img {
+    padding: 0.5em 0;
   }
 }
 
-@media (width >= 900px) {
-  header nav {
-    display: flex;
-    justify-content: space-between;
-  }
-
+@media (min-width: 900px) {
   header nav[aria-expanded="true"] {
     min-height: 0;
     overflow: visible;
@@ -51,6 +58,7 @@ header nav[aria-expanded="true"] {
 header nav p {
   margin: 0;
   line-height: 1;
+  color: #FFF;
 }
 
 header nav a:any-link {
@@ -131,7 +139,7 @@ header nav[aria-expanded="true"] .nav-hamburger-icon::after {
   transform: rotate(-45deg);
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
   header nav .nav-hamburger {
     display: none;
     visibility: hidden;
@@ -141,9 +149,8 @@ header nav[aria-expanded="true"] .nav-hamburger-icon::after {
 /* brand */
 header .nav-brand {
   grid-area: brand;
-  flex-basis: 128px;
-  font-size: var(--heading-font-size-s);
-  font-weight: 700;
+  font-size: var(--heading-font-size-m);
+  font-weight: 500;
   line-height: 1;
 }
 
@@ -152,13 +159,58 @@ header nav .nav-brand img {
   height: auto;
 }
 
+header nav .brand-logo {
+  display: flex;
+  align-items: center;
+}
+
+header nav .brand-logo div {
+  color: #FFF;
+  padding: 0 1em;
+}
+
+header nav .search-header {
+  position: relative;
+  padding: 0;
+}
+
+header nav .search-header label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+header nav .search-header input {
+  position: relative;
+  border: none;
+  padding: 9px 12px;
+  width: 100%;
+  background: var(--background-color);
+  outline: none;
+}
+
+header nav .search-header button {
+  position: absolute;
+  top: 0.5em;
+  bottom: 0;
+  right: 4px;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
 /* sections */
 header nav .nav-sections {
   grid-area: sections;
   flex: 1 1 auto;
   display: none;
   visibility: hidden;
-  background-color: var(--overlay-color);
 }
 
 header nav[aria-expanded="true"] .nav-sections {
@@ -186,7 +238,7 @@ header nav .nav-sections ul > li > ul > li {
   font-weight: 500;
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
   header nav .nav-sections {
     display: block;
     visibility: visible;
