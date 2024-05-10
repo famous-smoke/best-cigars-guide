@@ -1,3 +1,15 @@
+const formatUrl = (originalUrl) => {
+    // Create a URL object based on the original URL
+    var url = new URL(originalUrl);
+
+    // Set the new domain (including protocol)
+    url.hostname = 'www.famous-smoke.com';
+    url.protocol = 'https:';
+    url.port = '';
+    
+    return url;
+}
+
 const createMetadataBlock = (main, document) => {
   const meta = {};
 
@@ -27,18 +39,18 @@ const createMetadataBlock = (main, document) => {
 };
 
 const createArticleListBlock = (main, document) => {
-  var categories = [["Article-list"]];
-  let categoriesList = document.querySelector(".categories-list");
-  let divElements = categoriesList.querySelectorAll("div");
+  var categories = [['Article-list']];
+  let categoriesList = document.querySelector('.categories-list');
+  let divElements = categoriesList.querySelectorAll('div');
 
   divElements.forEach(function (element) {
-    var title = element.querySelector("h3").textContent.trim();
-    var description = element.querySelector("p").textContent.trim();
-    var image = element.querySelector("img");
+    var title = element.querySelector('h3').textContent.trim();
+    var description = element.querySelector('p').textContent.trim();
+    var image = element.querySelector('img');
     
-    var linkElement = element.querySelector("a.button");
+    var linkElement = element.querySelector('a.button');
     linkElement.class = 'button';
-    var link = linkElement ? linkElement.href : "";
+    var link = linkElement ? linkElement.href : '';
 
     var card = [
       [image],
@@ -55,31 +67,19 @@ const createArticleListBlock = (main, document) => {
   main.append(articleList);
 
   // remove .categories-list from main because we just added it manually
-  WebImporter.DOMUtils.remove(main, [".categories-list"]);
+  WebImporter.DOMUtils.remove(main, ['.categories-list']);
 
   return articleList;
 };
 
-const formatUrl = (originalUrl) => {
-    // Create a URL object based on the original URL
-    var url = new URL(originalUrl);
-
-    // Set the new domain (including protocol)
-    url.hostname = "www.famous-smoke.com";
-    url.protocol = "https:";
-    url.port = '';
-    
-    return url;
-}
-
 const removeSectionsNotForImport = (main, document) => {
   // remove any section from main not needed for import
-  WebImporter.DOMUtils.remove(main, [".category-dropdown",".breadcrumb"]);
+  WebImporter.DOMUtils.remove(main, ['.category-dropdown','.breadcrumb']);
 };
 
 export default {
   transformDOM: ({ document }) => {
-    const main = document.querySelector("main");
+    const main = document.querySelector('main');
 
     createMetadataBlock(main, document);
     createArticleListBlock(main, document);
