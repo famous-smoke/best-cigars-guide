@@ -74,8 +74,7 @@ export default function decorate(block) {
           anchor.appendChild(picture);
         }
       } else if (
-        !div.querySelector('picture') &&
-        li.querySelector('.article-list-card-body') === null
+        !div.querySelector('picture') && li.querySelector('.article-list-card-body') === null
       ) {
         // second div is for the article body
         div.className = 'article-list-card-body';
@@ -85,7 +84,7 @@ export default function decorate(block) {
         // Set class names for the first and second paragraphs within the article-list-card-body
         const paragraphs = div.previousSibling.querySelectorAll('p');
         if (paragraphs.length > 0) {
-          //change article title to an h3
+          // change article title to an h3
           const h3 = document.createElement('h3');
           h3.className = 'article-title';
           h3.textContent = paragraphs[0].textContent;
@@ -120,13 +119,9 @@ export default function decorate(block) {
   });
 
   // optimize images
-  ul.querySelectorAll('img').forEach((img) =>
-    img
-      .closest('picture')
-      .replaceWith(
-        createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }])
-      )
-  );
+  ul.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(
+    createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]),
+  ));
 
   // Remove any empty div tags
   [...ul.querySelectorAll('div')].forEach((div) => {
