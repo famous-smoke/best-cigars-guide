@@ -17,7 +17,7 @@ export default function decorate(block) {
   breadcrumbDiv.className = 'breadcrumb';
   breadcrumbDiv.innerHTML += `
   <p id="breadcrumbs">
-    <span><a href="https://www.famous-smoke.com/best-cigars-guide/">Home</a></span> » <span class="breadcrumb_last" aria-current="page">${h1Text}</span>
+    <span><a href="/best-cigars-guide">Home</a></span> » <span class="breadcrumb_last" aria-current="page">${h1Text}</span>
   </p>
   `;
   navDiv.append(breadcrumbDiv);
@@ -27,7 +27,7 @@ export default function decorate(block) {
   const dropdownListDiv = document.createElement('div');
   breadcrumbDiv.className = 'category-dropdown';
   dropdownListDiv.innerHTML += `
-    <form action="https://www.famous-smoke.com/best-cigars-guide/" method="get" class="dropcats">
+    <form action="/best-cigars-guide" method="get" class="dropcats">
     <select name="cat" id="cat" class="postform" onchange="return this.form.submit()">
     <option value="-1">Select a Category</option>
     <option class="level-0" value="2" selected="selected">Best Cigars by Country</option>
