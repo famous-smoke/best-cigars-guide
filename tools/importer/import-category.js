@@ -2,9 +2,9 @@ const createMetadataBlock = (main, document) => {
   const meta = {};
 
   // find the <title> element
-  const title = document.querySelector("title");
+  const title = document.querySelector('title');
   if (title) {
-    meta.Title = title.innerHTML.replace(/[\n\t]/gm, "");
+    meta.Title = title.innerHTML.replace(/[\n\t]/gm, ``);
   }
 
   // find the <meta property="og:description"> element
@@ -14,8 +14,7 @@ const createMetadataBlock = (main, document) => {
   }
 
   // set the <meta property="og:image"> element
-  meta.image =
-    "/best-cigars-guide/icons/best-cigars-guide.png";
+  meta.image = 'https://www.famous-smoke.com/best-cigars-guide/icons/best-cigars-guide.png';
 
   // helper to create the metadata block
   const block = WebImporter.Blocks.getMetadataBlock(document, meta);
@@ -29,20 +28,23 @@ const createMetadataBlock = (main, document) => {
 
 const createArticleListBlock = (main, document) => {
   var categories = [["Article-list"]];
-  var categoriesList = document.querySelector(".categories-list");
-  var divElements = categoriesList.querySelectorAll("div");
+  let categoriesList = document.querySelector(".categories-list");
+  let divElements = categoriesList.querySelectorAll("div");
 
   divElements.forEach(function (element) {
     var title = element.querySelector("h3").textContent.trim();
     var description = element.querySelector("p").textContent.trim();
     var image = element.querySelector("img");
-    var imageSrc = image ? image.src : "";
+    
     var linkElement = element.querySelector("a.button");
+    linkElement.class = 'button';
     var link = linkElement ? linkElement.href : "";
 
     var card = [
-      [image, link],
-      [title, description, linkElement],
+      [image],
+      [title], 
+      [description],
+      [formatUrl(link)]
     ];
 
     categories.push(card);
@@ -58,9 +60,21 @@ const createArticleListBlock = (main, document) => {
   return articleList;
 };
 
+const formatUrl = (originalUrl) => {
+    // Create a URL object based on the original URL
+    var url = new URL(originalUrl);
+
+    // Set the new domain (including protocol)
+    url.hostname = "www.famous-smoke.com";
+    url.protocol = "https:";
+    url.port = '';
+    
+    return url;
+}
+
 const removeSectionsNotForImport = (main, document) => {
   // remove any section from main not needed for import
-  WebImporter.DOMUtils.remove(main, [".category-dropdown"]);
+  WebImporter.DOMUtils.remove(main, [".category-dropdown",".breadcrumb"]);
 };
 
 export default {
