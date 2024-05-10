@@ -1,19 +1,19 @@
-import { createOptimizedPicture } from "../../scripts/aem.js";
+import { createOptimizedPicture } from './../scripts/aem.js';
 
 export default function decorate(block) {
-  //Add nav
-  //@todo sytle the nav
-  const mainTag = document.querySelector(".article-list-container");
-  const navDiv = document.createElement("div");
+  //Add nav 
+  //@todo sytle the nav 
+  const mainTag = document.querySelector('.article-list-container');
+  const navDiv = document.createElement('div');
   navDiv.className = 'nav-row';
   mainTag.prepend(navDiv);
 
-  //Add breadcrumbs
-  //@todo style breadcrumbs
-  const h1 = document.querySelector("h1");
+  //Add breadcrumbs 
+  //@todo style breadcrumbs 
+  const h1 = document.querySelector('h1');
   const h1Text = h1.textContent.trim();
 
-  const breadcrumbDiv = document.createElement("div");
+  const breadcrumbDiv = document.createElement('div');
   breadcrumbDiv.className = 'breadcrumb';
   breadcrumbDiv.innerHTML += `
   <p id="breadcrumbs">
@@ -22,8 +22,8 @@ export default function decorate(block) {
   `;
   navDiv.append(breadcrumbDiv);
 
-  //Add dropdown list (copied from existing site)
-  //@todo build list dynamically and style it
+  //Add dropdown list (copied from existing site) 
+  //@todo build list dynamically and style it 
   const dropdownListDiv = document.createElement("div");
   breadcrumbDiv.className = 'category-dropdown';
   dropdownListDiv.innerHTML += `
@@ -42,27 +42,27 @@ export default function decorate(block) {
   `;
   navDiv.append(dropdownListDiv);
 
-  //Add Article list
+  //Add Article list 
   /* change to ul, li */
   const ul = document.createElement("ul");
-  //loop over each row of import file
+  //loop over each row of import file 
   [...block.children].forEach((row) => {
     const li = document.createElement("li");
-    //For each row child, a new <li> is created.
+    //For each row child, a new <li> is created. 
     while (row.firstElementChild) li.append(row.firstElementChild);
 
-    // Find the last div and extract the href from its link
+    // Find the last div and extract the href from its link 
     const lastDiv = li.querySelector("div:last-child");
     const link = lastDiv ? lastDiv.querySelector("a") : null;
-    const href = link ? link.href : "#"; // Default to '#' if no link is found
+    const href = link ? link.href : "#"; // Default to '#' if no link is found 
 
-    // The second div contains the title for links and buttons
-    const secondDiv = li.children[1]; // direct access to the second child assuming it's a div
-    const title = secondDiv ? secondDiv.textContent.trim() : ""; // Get the text content as title
+    // The second div contains the title for links and buttons 
+    const secondDiv = li.children[1]; // direct access to the second child assuming it's a div 
+    const title = secondDiv ? secondDiv.textContent.trim() : ""; // Get the text content as title 
 
-    //loop over each li
+    //loop over each li 
     [...li.children].forEach((div) => {
-      //first div is for the article image
+      //first div is for the article image 
       if (div.querySelector("picture")) {
         div.className = "article-list-card-image";
         const picture = div.querySelector("picture");
@@ -74,33 +74,33 @@ export default function decorate(block) {
           anchor.appendChild(picture);
         }
       }
-      //second div is for the article body
+      //second div is for the article body 
       else if (
         !div.querySelector("picture") &&
         li.querySelector(".article-list-card-body") === null
       ) {
         div.className = "article-list-card-body";
       } 
-      //remaining divs are appended to prior article body div
+      //remaining divs are appended to prior article body div 
       else {
         div.previousSibling.append(div.firstElementChild);
-        // Set class names for the first and second paragraphs within the article-list-card-body
+        // Set class names for the first and second paragraphs within the article-list-card-body 
         const paragraphs = div.previousSibling.querySelectorAll("p");
-        // First paragraph as article-title
+        // First paragraph as article-title 
         if (paragraphs.length > 0) {
-          //change article title to an h3
+          //change article title to an h3 
           const h3 = document.createElement("h3");
           h3.className = "article-title";
           h3.textContent = paragraphs[0].textContent;
           div.previousSibling.replaceChild(h3, paragraphs[0]);
         }
-        // Second paragraph as article-description
+        // Second paragraph as article-description 
         if (paragraphs.length > 1) {
           paragraphs[1].className = "article-description"; 
         }
       }
 
-      // Create and append a new div with a button
+      // Create and append a new div with a button 
       if (!li.querySelector("a.button")) {
         const newDiv = document.createElement("div");
         newDiv.className = 'article-button-container';
