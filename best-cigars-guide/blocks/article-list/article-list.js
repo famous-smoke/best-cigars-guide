@@ -1,20 +1,20 @@
-import { createOptimizedPicture } from "../../scripts/aem.js";
+import { createOptimizedPicture } from '../../scripts/aem.js';
 
 export default function decorate(block) {
   // Add nav
   // @todo sytle the nav
-  const mainTag = document.querySelector(".article-list-container");
-  const navDiv = document.createElement("div");
-  navDiv.className = "nav-row";
+  const mainTag = document.querySelector('.article-list-container');
+  const navDiv = document.createElement('div');
+  navDiv.className = 'nav-row';
   mainTag.prepend(navDiv);
 
   // Add breadcrumbs
   // @todo style breadcrumbs
-  const h1 = document.querySelector("h1");
+  const h1 = document.querySelector('h1');
   const h1Text = h1.textContent.trim();
 
-  const breadcrumbDiv = document.createElement("div");
-  breadcrumbDiv.className = "breadcrumb";
+  const breadcrumbDiv = document.createElement('div');
+  breadcrumbDiv.className = 'breadcrumb';
   breadcrumbDiv.innerHTML += `
   <p id="breadcrumbs">
     <span><a href="https://www.famous-smoke.com/best-cigars-guide/">Home</a></span> » <span class="breadcrumb_last" aria-current="page">${h1Text}</span>
@@ -22,10 +22,10 @@ export default function decorate(block) {
   `;
   navDiv.append(breadcrumbDiv);
 
-  //Add dropdown list (copied from existing site)
-  //@todo build list dynamically and style it
-  const dropdownListDiv = document.createElement("div");
-  breadcrumbDiv.className = "category-dropdown";
+  // Add dropdown list (copied from existing site)
+  // @todo build list dynamically and style it
+  const dropdownListDiv = document.createElement('div');
+  breadcrumbDiv.className = 'category-dropdown';
   dropdownListDiv.innerHTML += `
     <form action="https://www.famous-smoke.com/best-cigars-guide/" method="get" class="dropcats">
     <select name="cat" id="cat" class="postform" onchange="return this.form.submit()">
