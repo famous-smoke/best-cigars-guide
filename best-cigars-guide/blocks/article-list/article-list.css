@@ -1,0 +1,99 @@
+/* General styles for the list and list items */
+.article-list > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(278px, 1fr));
+  grid-gap: 16px;
+}
+
+.article-list > ul > li {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+/* Styles for article body, title, and description */
+.article-list-card-body {
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: center;
+}
+
+.article-title {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Image and hover effects */
+.article-list-card-image a {
+  display: block;
+  overflow: hidden;
+}
+
+.article-list-card-image img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+  line-height: 0;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.article-list-card-image a:hover img {
+  transform: scale(1.1);
+}
+
+/* Button styles */
+.article-list .article-button-container .button {
+  font-size: 1.1rem;
+  background-color: #177abb;
+  color: white;
+  padding: 10px 40px;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  border-bottom: 1px solid #035890;
+  margin-top: auto;
+  transition: background-color 0.3s ease; /* Smooth transition for background color change */
+}
+
+/* Button hover effect */
+.article-list .article-button-container .button:hover {
+  background-color: #035890;
+}
+
+/* Container styling for the button */
+.article-button-container {
+  display: flex;  /* Use flexbox for layout */
+  justify-content: center;  /* Center horizontally */
+  align-items: center;  /* Center vertically */
+  padding: 10px;  
+  margin-top: auto;  /* Pushes the container to the bottom if flex-direction is column in parent */
+}
+
+/* Styles for headings and paragraphs */
+.article-list h3 {
+  color: #2c2c2c;
+  font-weight: 700;
+  line-height: 1.2em;
+  font-size: 1.3rem;
+}
+
+.article-list p {
+  font-family: montserrat, sans-serif;
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.4em;
+  color: #4a4a4a;
+  margin: 0 0 1.8em;
+}
