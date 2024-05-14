@@ -70,6 +70,20 @@ export function decorateMain(main) {
 }
 
 /**
+ * Checks if the given path is an external URL.
+ * @param {string} path - The path to be checked.
+ * @returns {boolean} - Returns true if the path is an external URL, false otherwise.
+ */
+export function isInternal(path) {
+  try {
+    const url = new URL(path);
+    return (window.location.hostname === url.hostname && url.pathname.startsWith('/best-cigars-guide'));
+  } catch (error) {
+    return true;
+  }
+}
+
+/**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
