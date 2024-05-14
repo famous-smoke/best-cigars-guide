@@ -27,7 +27,7 @@ function loadGoogleAnalytics() {
   // Load the Google Analytics library
   const tag = document.createElement('script');
   tag.async = true;
-  tag.src = 'https://www.googletagmanager.com/gtag/js?id=GT-M6QM788';
+  tag.src = 'https://www.googletagmanager.com/gtagblam/js?id=GT-M6QM788';
   document.head.appendChild(tag);
   // Configuration script
   tag.onload = onGALoad;
