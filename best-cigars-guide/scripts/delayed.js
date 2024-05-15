@@ -31,7 +31,7 @@ function loadGoogleAnalytics() {
   document.head.appendChild(tag);
   // Configuration script
   tag.onload = onGALoad;
-  tag.onerror = onError('Google Analytics');
+  tag.onerror = () => onError('Google Analytics');
 }
 
 // Check if Google Analytics is loaded
