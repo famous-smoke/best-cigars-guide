@@ -1,0 +1,69 @@
+.excludes: &excludes
+  - '**/drafts/**'
+  - '**/images/**'
+  - '**/icons/**'
+  - '**/fragments/**'
+
+version: 1
+indices:
+  default:
+    include:
+      - /**
+    exclude:
+      - '**/drafts/**'
+      - '**/images/**'
+      - '**/icons/**'
+      - '**/fragments/**'
+      - /best-cigars-guide/footer
+      - /best-cigars-guide/nav
+      - /best-cigars-guide/404
+      - /best-cigars-guide/search
+      - /best-cigars-guide/best-cigars-by-country
+      - /best-cigars-guide/best-cigars-by-occasion
+      - /best-cigars-guide/best-cigars-by-food-drink-pairing
+      - /best-cigars-guide/best-cigars-by-shape-type-size
+      - /best-cigars-guide/best-cigars-by-year
+      - /best-cigars-guide/best-cigar-accessories
+    target: /best-cigars-guide/index/query-index.json
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, "content")
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, "content"), "https:\/\/[^/]+(/.*)")
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, "content")
+      lastModified:
+        select: none
+        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
+      text:
+        select: main > div p
+        value: words(textContent(el), 0, 5000)
+  categories:
+    include:
+      - /best-cigars-guide/best-cigars-by-country
+      - /best-cigars-guide/best-cigars-by-occasion
+      - /best-cigars-guide/best-cigars-by-food-drink-pairing
+      - /best-cigars-guide/best-cigars-by-shape-type-size
+      - /best-cigars-guide/best-cigars-by-year
+      - /best-cigars-guide/best-cigar-accessories
+    exclude: *excludes
+    target: /best-cigars-guide/index/category-index.json
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, "content")
+      image:
+        select: head > meta[property="og:image"]
+        value: match(attribute(el, "content"), "https:\/\/[^/]+(/.*)")
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, "content")
+      lastModified:
+        select: none
+        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
+      text:
+        select: div.article-list
+        value: words(textContent(el), 0, 5000)

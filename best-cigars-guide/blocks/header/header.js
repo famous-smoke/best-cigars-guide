@@ -153,7 +153,7 @@ export default async function decorate(block) {
   searchBox.innerHTML = `
   <form role="search" action="/best-cigars-guide/search" class="search search-header">
     <label for="header-search-term">Search</label>
-    <input type="search" id="header-search-term" maxlength="255" placeholder="Search" name="s" autocomplete="off">
+    <input type="search" id="header-search-term" maxlength="255" placeholder="Search" name="q" autocomplete="off">
     <button type="submit" class="search-submit" value="Submit" title="Submit">
       <span class="icon icon-search"><img data-icon-name="search" src="/best-cigars-guide/icons/search.svg" alt="Search" title="Search" loading="lazy"></span>
     </button>
