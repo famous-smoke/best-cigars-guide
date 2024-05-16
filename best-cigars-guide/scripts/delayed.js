@@ -39,9 +39,23 @@ function isGALoaded() {
   return window.dataLayer && Array.isArray(window.dataLayer);
 }
 
+function loadiZooto() {
+  // iZooto initialization script
+  const iZootoInit = document.createElement('script');
+  iZootoInit.innerHTML = 'window._izq = window._izq || []; window._izq.push(["init"]);';
+  document.head.appendChild(iZootoInit);
+  // iZooto library script
+  const iZootoLib = document.createElement('script');
+  iZootoLib.async = true;
+  iZootoLib.src = 'https://cdn.izooto.com/scripts/cea9e5a4539423a917b8cc1f6090b064fc3c2ba5.js';
+  iZootoLib.onerror = () => onError('iZooto');
+  document.head.appendChild(iZootoLib);
+}
+
 // Load Scripts
 if (window.location.hostname !== 'localhost') {
   if (!isGALoaded()) {
     loadGoogleAnalytics();
   }
+  loadiZooto();
 }
