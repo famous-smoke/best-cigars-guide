@@ -115,7 +115,7 @@ function loadTrueVault() {
 }
 
 // Load Scripts
-if (window.location.hostname !== 'localhost' || true) {
+if (window.location.hostname !== 'localhost') {
   if (!isGALoaded()) {
     loadGoogleAnalytics();
   }

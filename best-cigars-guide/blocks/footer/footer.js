@@ -23,10 +23,10 @@ function getFamousLogo() {
 }
 
 function addAccessibeLink(footer) {
-  // Find the Privacy Policy link
-  const privacyPolicyLink = footer.querySelector('a[title="Privacy Policy"]');
+  // Find the paragraph containing the links
+  const footerParagraph = footer.querySelector('.default-content-wrapper p:last-of-type');
 
-  if (privacyPolicyLink) {
+  if (footerParagraph) {
     // Create the new link element
     const accessibilityLink = document.createElement('a');
     accessibilityLink.href = '#';
@@ -36,9 +36,17 @@ function addAccessibeLink(footer) {
     // Separator element
     const separator = document.createTextNode(' | ');
 
-    // Insert the new link after the Privacy Policy link
-    privacyPolicyLink.parentNode.insertBefore(separator, privacyPolicyLink.nextSibling);
-    privacyPolicyLink.parentNode.insertBefore(accessibilityLink, separator.nextSibling);
+    // Find the last link in the paragraph
+    const lastLink = footerParagraph.querySelector('a:last-of-type');
+
+    // Insert the new link after the last existing link
+    if (lastLink) {
+      lastLink.parentNode.insertBefore(separator, lastLink.nextSibling);
+      lastLink.parentNode.insertBefore(accessibilityLink, separator.nextSibling);
+    } else {
+      // If no links found, just append to the paragraph
+      footerParagraph.appendChild(accessibilityLink);
+    }
   }
 }
 
@@ -58,7 +66,7 @@ function addTrueVaultCaliforniaPolicyLink(footer) {
     // Find the last link in the paragraph
     const lastLink = footerParagraph.querySelector('a:last-of-type');
 
-    // Optionally, add a separator if needed
+    // Separator element
     const separator = document.createElement('span');
     separator.className = 'truevault-polaris-privacy-notice';
     separator.rel = 'noreferrer noopener';
@@ -99,7 +107,7 @@ function addTrueVaultOptOut(footer) {
     yourPrivacyChoicesLink.appendChild(img);
     yourPrivacyChoicesLink.appendChild(document.createTextNode(' Your Privacy Choices'));
 
-    // Optionally, add a separator if needed
+    // Separator element
     const separator = document.createElement('span');
     separator.className = 'truevault-polaris-optout';
     separator.rel = 'noreferrer noopener';
