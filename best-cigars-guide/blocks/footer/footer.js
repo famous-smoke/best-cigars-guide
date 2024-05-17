@@ -22,6 +22,26 @@ function getFamousLogo() {
   return wrap;
 }
 
+function addAccessibeLink(footer) {
+  // Find the Privacy Policy link
+  const privacyPolicyLink = footer.querySelector('a[title="Privacy Policy"]');
+
+  if (privacyPolicyLink) {
+    // Create the new link element
+    const accessibilityLink = document.createElement('a');
+    accessibilityLink.href = '#';
+    accessibilityLink.textContent = 'Accessibility';
+    accessibilityLink.setAttribute('data-acsb-custom-trigger', 'true');
+
+    // Separator element
+    const separator = document.createTextNode(' | ');
+
+    // Insert the new link after the Privacy Policy link
+    privacyPolicyLink.parentNode.insertBefore(separator, privacyPolicyLink.nextSibling);
+    privacyPolicyLink.parentNode.insertBefore(accessibilityLink, separator.nextSibling);
+  }
+}
+
 /**
  * loads and decorates the footer
  * @param {Element} block The footer block element
@@ -39,6 +59,9 @@ export default async function decorate(block) {
 
   // Add the Famous logo
   footer.prepend(getFamousLogo());
+
+  // Add Accessibe
+  addAccessibeLink(footer);
 
   // Open external links in new tab
   footer.querySelectorAll('a').forEach((a) => {

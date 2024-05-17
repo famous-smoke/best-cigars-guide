@@ -52,10 +52,57 @@ function loadiZooto() {
   document.head.appendChild(iZootoLib);
 }
 
+function loadAccessibe() {
+  // Create the script element for the AccessiBe library
+  const script = document.createElement('script');
+  const head = document.querySelector('head') || document.body;
+  script.src = 'https://acsbapp.com/apps/app/dist/js/app.js';
+  script.async = true;
+
+  // Define the callback function to initialize AccessiBe
+  function initializeAccessibe() {
+    // eslint-disable-next-line no-undef
+    acsbJS.init({
+      statementLink: '',
+      feedbackLink: '',
+      footerHtml: '',
+      hideMobile: false,
+      hideTrigger: true,
+      language: 'en',
+      position: 'right',
+      leadColor: '#146FF8',
+      triggerColor: '#146FF8',
+      triggerRadius: '50%',
+      triggerPositionX: 'right',
+      triggerPositionY: 'bottom',
+      triggerIcon: 'default',
+      triggerSize: 'medium',
+      triggerOffsetX: 20,
+      triggerOffsetY: 20,
+      mobile: {
+        triggerSize: 'small',
+        triggerPositionX: 'right',
+        triggerPositionY: 'bottom',
+        triggerOffsetX: 0,
+        triggerOffsetY: 0,
+        triggerRadius: '0',
+      },
+    });
+  }
+
+  // Add event listeners for load and error events
+  script.onload = initializeAccessibe;
+  script.onerror = () => onError('Accessibe');
+
+  // Append the script to the body or html element
+  head.appendChild(script);
+}
+
 // Load Scripts
-if (window.location.hostname !== 'localhost') {
+if (window.location.hostname !== 'localhost' || true) {
   if (!isGALoaded()) {
     loadGoogleAnalytics();
   }
   loadiZooto();
+  loadAccessibe();
 }
