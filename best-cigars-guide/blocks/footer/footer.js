@@ -22,56 +22,13 @@ function getFamousLogo() {
   return wrap;
 }
 
-function addAccessibeLink(footer) {
+function addLinkToFooter(newLink, separator, footer) {
   // Find the paragraph containing the links
   const footerParagraph = footer.querySelector('.default-content-wrapper p:last-of-type');
 
   if (footerParagraph) {
-    // Create the new link element
-    const accessibilityLink = document.createElement('a');
-    accessibilityLink.href = '#';
-    accessibilityLink.textContent = 'Accessibility';
-    accessibilityLink.setAttribute('data-acsb-custom-trigger', 'true');
-
-    // Separator element
-    const separator = document.createTextNode(' | ');
-
     // Find the last link in the paragraph
     const lastLink = footerParagraph.querySelector('a:last-of-type');
-
-    // Insert the new link after the last existing link
-    if (lastLink) {
-      lastLink.parentNode.insertBefore(separator, lastLink.nextSibling);
-      lastLink.parentNode.insertBefore(accessibilityLink, separator.nextSibling);
-    } else {
-      // If no links found, just append to the paragraph
-      footerParagraph.appendChild(accessibilityLink);
-    }
-  }
-}
-
-function addTrueVaultCaliforniaPolicyLink(footer) {
-  // Find the paragraph containing the links
-  const footerParagraph = footer.querySelector('.default-content-wrapper p:last-of-type');
-
-  if (footerParagraph) {
-    // Create the new link element
-    const newLink = document.createElement('a');
-    newLink.className = 'truevault-polaris-privacy-notice';
-    newLink.href = 'https://privacy.famous-smoke.com/privacy-policy#california-privacy-notice';
-    newLink.rel = 'noreferrer noopener';
-    newLink.hidden = true;
-    newLink.textContent = 'California Privacy Notice';
-
-    // Find the last link in the paragraph
-    const lastLink = footerParagraph.querySelector('a:last-of-type');
-
-    // Separator element
-    const separator = document.createElement('span');
-    separator.className = 'truevault-polaris-privacy-notice';
-    separator.rel = 'noreferrer noopener';
-    separator.hidden = true;
-    separator.textContent = ' | ';
 
     // Insert the new link after the last existing link
     if (lastLink) {
@@ -84,48 +41,68 @@ function addTrueVaultCaliforniaPolicyLink(footer) {
   }
 }
 
+function addAccessibeLink(footer) {
+  // Create the new link element
+  const accessibilityLink = document.createElement('a');
+  accessibilityLink.href = '#';
+  accessibilityLink.textContent = 'Accessibility';
+  accessibilityLink.setAttribute('data-acsb-custom-trigger', 'true');
+
+  // Separator element
+  const separator = document.createTextNode(' | ');
+
+  // Add link to footer
+  addLinkToFooter(accessibilityLink, separator, footer);
+}
+
+function addTrueVaultCaliforniaPolicyLink(footer) {
+  // Create the new link element
+  const caPolicyLink = document.createElement('a');
+  caPolicyLink.className = 'truevault-polaris-privacy-notice';
+  caPolicyLink.href = 'https://privacy.famous-smoke.com/privacy-policy#california-privacy-notice';
+  caPolicyLink.rel = 'noreferrer noopener';
+  caPolicyLink.hidden = true;
+  caPolicyLink.textContent = 'California Privacy Notice';
+
+  // Separator element
+  const separator = document.createElement('span');
+  separator.className = 'truevault-polaris-privacy-notice';
+  separator.rel = 'noreferrer noopener';
+  separator.hidden = true;
+  separator.textContent = ' | ';
+
+  // Add link to footer
+  addLinkToFooter(caPolicyLink, separator, footer);
+}
+
 function addTrueVaultOptOut(footer) {
-  // Find the paragraph containing the links
-  const footerParagraph = footer.querySelector('.default-content-wrapper p:last-of-type');
+  // Create the new link element for "Your Privacy Choices"
+  const privacyChoicesLink = document.createElement('a');
+  privacyChoicesLink.className = 'truevault-polaris-optout';
+  privacyChoicesLink.href = 'https://privacy.famous-smoke.com/opt-out';
+  privacyChoicesLink.rel = 'noreferrer noopener';
+  privacyChoicesLink.hidden = true;
 
-  if (footerParagraph) {
-    // Create the new link element for "Your Privacy Choices"
-    const yourPrivacyChoicesLink = document.createElement('a');
-    yourPrivacyChoicesLink.className = 'truevault-polaris-optout';
-    yourPrivacyChoicesLink.href = 'https://privacy.famous-smoke.com/opt-out';
-    yourPrivacyChoicesLink.rel = 'noreferrer noopener';
-    yourPrivacyChoicesLink.hidden = true;
+  // Create the image element
+  const img = document.createElement('img');
+  img.src = 'https://polaris.truevaultcdn.com/static/assets/icons/optout-icon-black.svg';
+  img.alt = 'California Consumer Privacy Act (CCPA) Opt-Out Icon';
+  img.style.verticalAlign = 'middle';
+  img.height = 14;
 
-    // Create the image element
-    const img = document.createElement('img');
-    img.src = 'https://polaris.truevaultcdn.com/static/assets/icons/optout-icon-black.svg';
-    img.alt = 'California Consumer Privacy Act (CCPA) Opt-Out Icon';
-    img.style.verticalAlign = 'middle';
-    img.height = 14;
+  // Append the image and text to the "Your Privacy Choices" link
+  privacyChoicesLink.appendChild(img);
+  privacyChoicesLink.appendChild(document.createTextNode(' Your Privacy Choices'));
 
-    // Append the image and text to the "Your Privacy Choices" link
-    yourPrivacyChoicesLink.appendChild(img);
-    yourPrivacyChoicesLink.appendChild(document.createTextNode(' Your Privacy Choices'));
+  // Separator element
+  const separator = document.createElement('span');
+  separator.className = 'truevault-polaris-optout';
+  separator.rel = 'noreferrer noopener';
+  separator.hidden = true;
+  separator.textContent = ' | ';
 
-    // Separator element
-    const separator = document.createElement('span');
-    separator.className = 'truevault-polaris-optout';
-    separator.rel = 'noreferrer noopener';
-    separator.hidden = true;
-    separator.textContent = ' | ';
-
-    // Find the last link in the paragraph
-    const lastLink = footerParagraph.querySelector('a:last-of-type');
-
-    // Insert the new link after the last existing link
-    if (lastLink) {
-      lastLink.parentNode.insertBefore(separator, lastLink.nextSibling);
-      lastLink.parentNode.insertBefore(yourPrivacyChoicesLink, separator.nextSibling);
-    } else {
-      // If no links found, just append to the paragraph
-      footerParagraph.appendChild(yourPrivacyChoicesLink);
-    }
-  }
+  // Add link to footer
+  addLinkToFooter(privacyChoicesLink, separator, footer);
 }
 
 /**
