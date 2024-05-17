@@ -98,6 +98,22 @@ function loadAccessibe() {
   head.appendChild(script);
 }
 
+function loadTrueVault() {
+  window.polarisOptions = {
+    GoogleAnalyticsTrackingId: 'G-JNTYD06WGL',
+    enableConsentManager: true,
+    privacyCenterId: 'OTNJF7CVF',
+  };
+
+  const script = document.createElement('script');
+  script.src = 'https://polaris.truevaultcdn.com/static/polaris.js';
+  script.onload = () => {
+    // DOMContentLoaded event is required to initialise polaris
+    window.document.dispatchEvent(new Event('DOMContentLoaded'));
+  };
+  document.head.appendChild(script);
+}
+
 // Load Scripts
 if (window.location.hostname !== 'localhost' || true) {
   if (!isGALoaded()) {
@@ -105,4 +121,5 @@ if (window.location.hostname !== 'localhost' || true) {
   }
   loadiZooto();
   loadAccessibe();
+  loadTrueVault();
 }
