@@ -101,12 +101,10 @@ function loadAccessibe() {
 function loadTrueVault() {
   window.polarisOptions = {
     GoogleAnalyticsTrackingId: 'G-JNTYD06WGL',
-    enableConsentManager: true,
-    privacyCenterId: 'OTNJF7CVF',
   };
 
   const script = document.createElement('script');
-  script.src = 'https://polaris.truevaultcdn.com/static/polaris.js';
+  script.src = 'https://polaris.truevaultcdn.com/static/pc/OTNJF7CVF/polaris.js';
   script.onload = () => {
     // DOMContentLoaded event is required to initialise polaris
     window.document.dispatchEvent(new Event('DOMContentLoaded'));
