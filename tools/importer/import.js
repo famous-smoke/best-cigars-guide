@@ -28,6 +28,10 @@ const createMetadataBlock = (post, document) => {
     el.src = img.src;
     meta.Image = el;
   }
+
+  // Get the published date
+  const published = new Date(document.querySelector('[property="article:published_time"]').content);
+  meta.publishedDate = `${published.getDate()} ${published.toLocaleDateString('default', { month: 'long'})} ${published.getFullYear()}`;
   // end modified
 
   // helper to create the metadata block
@@ -89,4 +93,8 @@ export default {
     createMetadataBlock(post, document);
     return post;
   },
+
+  generateDocumentPath: ({ document, url, html, params }) => {
+    return document.querySelector("link[rel='canonical']").getAttribute("href");
+  }
 };
