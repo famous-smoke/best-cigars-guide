@@ -74,11 +74,11 @@
 
 /* Container styling for the button */
 .article-button-container {
-  display: flex;  /* Use flexbox for layout */
-  justify-content: center;  /* Center horizontally */
-  align-items: center;  /* Center vertically */
-  padding: 10px;  
-  margin-top: auto;  /* Pushes the container to the bottom if flex-direction is column in parent */
+  display: flex; /* Use flexbox for layout */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  padding: 10px;
+  margin-top: auto; /* Pushes the container to the bottom if flex-direction is column in parent */
 }
 
 /* Styles for headings and paragraphs */

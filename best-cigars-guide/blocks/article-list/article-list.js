@@ -1,47 +1,6 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
 export default function decorate(block) {
-  // Add nav
-  // @todo sytle the nav
-  const mainTag = document.querySelector('.article-list-container');
-  const navDiv = document.createElement('div');
-  navDiv.className = 'nav-row';
-  mainTag.prepend(navDiv);
-
-  // Add breadcrumbs
-  // @todo style breadcrumbs
-  const h1 = document.querySelector('h1');
-  const h1Text = h1.textContent.trim();
-
-  const breadcrumbDiv = document.createElement('div');
-  breadcrumbDiv.className = 'breadcrumb';
-  breadcrumbDiv.innerHTML += `
-  <p id="breadcrumbs">
-    <span><a href="/best-cigars-guide">Home</a></span> » <span class="breadcrumb_last" aria-current="page">${h1Text}</span>
-  </p>
-  `;
-  navDiv.append(breadcrumbDiv);
-
-  // Add dropdown list (copied from existing site)
-  // @todo build list dynamically and style it
-  const dropdownListDiv = document.createElement('div');
-  breadcrumbDiv.className = 'category-dropdown';
-  dropdownListDiv.innerHTML += `
-    <form action="/best-cigars-guide" method="get" class="dropcats">
-    <select name="cat" id="cat" class="postform" onchange="return this.form.submit()">
-    <option value="-1">Select a Category</option>
-    <option class="level-0" value="2" selected="selected">Best Cigars by Country</option>
-    <option class="level-0" value="3">Best Cigars by Occasion</option>
-    <option class="level-0" value="4">Best Cigars by Food/Drink Pairing</option>
-    <option class="level-0" value="5">Best Cigars by Shape, Type &amp; Size</option>
-    <option class="level-0" value="6">Best Cigars by Year</option>
-    <option class="level-0" value="7">Best Cigar Accessories</option>
-    </select>
-    <noscript><input type="submit" value="View" /></noscript>
-    </form> 
-  `;
-  navDiv.append(dropdownListDiv);
-
   // Add Article list
   /* change to ul, li */
   const ul = document.createElement('ul');
@@ -73,9 +32,7 @@ export default function decorate(block) {
           picture.parentNode.insertBefore(anchor, picture);
           anchor.appendChild(picture);
         }
-      } else if (
-        !div.querySelector('picture') && li.querySelector('.article-list-card-body') === null
-      ) {
+      } else if (!div.querySelector('picture') && li.querySelector('.article-list-card-body') === null) {
         // second div is for the article body
         div.className = 'article-list-card-body';
       } else {
@@ -119,9 +76,7 @@ export default function decorate(block) {
   });
 
   // optimize images
-  ul.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(
-    createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]),
-  ));
+  ul.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }])));
 
   // Remove any empty div tags
   [...ul.querySelectorAll('div')].forEach((div) => {

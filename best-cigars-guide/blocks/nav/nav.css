@@ -1,0 +1,51 @@
+/* General container styling */
+.nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 0;
+}
+
+/* Breadcrumb styling */
+.breadcrumb {
+  font-size: 14px;
+  color: #666;
+}
+
+#breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#breadcrumbs a {
+  color: #0073aa;
+  text-decoration: none;
+}
+
+#breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb_last {
+  color: #333;
+  font-weight: 400;
+}
+
+/* Dropdown styling */
+.category-dropdown {
+  font-size: var(--heading-font-size-l);
+}
+
+.dropcats select {
+  font-size: var(--heading-font-size-s);
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.dropcats select:focus {
+  outline: none;
+  border-color: #0073aa;
+}
