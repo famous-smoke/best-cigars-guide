@@ -25,7 +25,7 @@ function createBreadcrumbs() {
 
       span.appendChild(anchor);
     } else {
-      span.className = 'breadcrumb_last';
+      span.className = 'breadcrumb-last';
       span.setAttribute('aria-current', 'page');
       span.textContent = item.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize words
     }
