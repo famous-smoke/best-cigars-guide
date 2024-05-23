@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  */
 
-/* eslint-disable rule-empty-line-before */
-
 :root {
   /* colors */
   --link-color: #035fe6;
@@ -26,6 +24,7 @@
 
   /* fonts */
   font-size: 16px;
+
   --body-font-family: montserrat, 'Montserrat Fallback', sans-serif;
   --heading-font-family: var(--body-font-family);
   --fixed-font-family: var(--body-font-family);
@@ -103,18 +102,23 @@ h6 {
 h1 {
   font-size: var(--heading-font-size-xxl);
 }
+
 h2 {
   font-size: var(--heading-font-size-xl);
 }
+
 h3 {
   font-size: var(--heading-font-size-l);
 }
+
 h4 {
   font-size: var(--heading-font-size-m);
 }
+
 h5 {
   font-size: var(--heading-font-size-s);
 }
+
 h6 {
   font-size: var(--heading-font-size-xs);
 }
