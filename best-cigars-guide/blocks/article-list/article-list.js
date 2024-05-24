@@ -13,7 +13,7 @@ export default function decorate(block) {
     // Find the last div and extract the href from its link
     const lastDiv = li.querySelector('div:last-child');
     const link = lastDiv ? lastDiv.querySelector('a') : null;
-    const href = link ? link.href : '#'; // Default to '#' if no link is found
+    const href = link ? link.href.replace(/\/$/, '') : '#'; // Strip trailing slash and default to '#' if no link is found
 
     // The second div contains the title for links and buttons
     const secondDiv = li.children[1]; // direct access to the second child assuming it's a div
