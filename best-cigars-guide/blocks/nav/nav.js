@@ -20,14 +20,16 @@ function createBreadcrumbs() {
       if (index === 0) {
         anchor.textContent = 'Home';
       } else {
-        anchor.textContent = item.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize words
+        anchor.textContent = item.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
       }
 
       span.appendChild(anchor);
     } else {
       span.className = 'breadcrumb-last';
       span.setAttribute('aria-current', 'page');
-      span.textContent = item.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize words
+      const h1 = document.querySelector('h1');
+      const lastBreadcrumb = h1 ? h1.textContent : item.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+      span.textContent = lastBreadcrumb;
     }
 
     pElement.appendChild(span);
