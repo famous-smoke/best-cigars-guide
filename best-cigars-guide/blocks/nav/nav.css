@@ -33,8 +33,8 @@
 }
 
 .breadcrumb-last {
-  color: #333;
-  font-weight: 400;
+  color: #4a4a4a;
+  font-weight: 300;
 }
 
 /* Dropdown styling */
@@ -50,8 +50,8 @@
 
 .dropcats select {
   font-size: var(--heading-font-size-s);
-  color: #333;
-  font-weight: 100;
+  color: #4a4a4a;
+  font-weight: 300;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 3px;
