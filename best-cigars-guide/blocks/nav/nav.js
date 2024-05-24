@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+import { fetchCategoryList } from '../../scripts/scripts.js';
 
 // Function to create the breadcrumb structure
 function createBreadcrumbs() {
@@ -38,12 +38,73 @@ function createBreadcrumbs() {
   });
 
   breadcrumbDiv.appendChild(pElement);
+
+  // Return the breadcrumb div
   return breadcrumbDiv;
 }
 
 // Function to create the categories dropdown
-function createCategoriesDropdown() {
-  return null;
+async function createCategoriesDropdown() {
+  // Create the category dropdown container div
+  const categoryDropdownDiv = document.createElement('div');
+  categoryDropdownDiv.className = 'category-dropdown';
+
+  // Create the form element
+  const form = document.createElement('form');
+  form.method = 'get';
+  form.className = 'dropcats';
+
+  // Set the form action to use the current domain
+  form.action = `${window.location.origin}/best-cigars-guide/`;
+
+  // Create the select element
+  const select = document.createElement('select');
+  select.name = 'cat';
+  select.id = 'cat';
+  select.className = 'postform';
+  function categoryDropdownOnChange() {
+    window.location.href = select.options[select.selectedIndex].value;
+  }
+  select.onchange = categoryDropdownOnChange;
+
+  // Get the category path, the first two parts of the current path
+  const currentCategoryPath = window.location.pathname.split('/').slice(0, 3).join('/');
+
+  // populate categories list
+  const categoriesList = await fetchCategoryList();
+
+  // Create and append options to the select element
+  categoriesList.forEach((category) => {
+    const option = document.createElement('option');
+    option.value = category.path;
+    option.textContent = category.path
+      .split('/')
+      .pop()
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+    const categoryPath = category.path.split('/').slice(0, 3).join('/');
+    if (categoryPath === currentCategoryPath) {
+      option.selected = true;
+    }
+    select.appendChild(option);
+  });
+
+  // Append the select element to the form
+  form.appendChild(select);
+
+  // Create and append the noscript element with a submit button
+  const noscript = document.createElement('noscript');
+  const submitButton = document.createElement('input');
+  submitButton.type = 'submit';
+  submitButton.value = 'View';
+  noscript.appendChild(submitButton);
+  form.appendChild(noscript);
+
+  // Append the form to the category dropdown container div
+  categoryDropdownDiv.appendChild(form);
+
+  // Return the category dropdown div
+  return categoryDropdownDiv;
 }
 
 export default function decorate(block) {
@@ -69,11 +130,14 @@ export default function decorate(block) {
     navDiv.append(breadcrumbDiv);
   }
 
-  // Create Categoreis Dropdown
-  if (addCategoriesDropdown) {
-    const categoriesDropdownDiv = createCategoriesDropdown();
-    navDiv.append(categoriesDropdownDiv);
+  // Create Categories Dropdown
+  async function awaitCategoriesDropdown() {
+    if (addCategoriesDropdown) {
+      const categoriesDropdownDiv = await createCategoriesDropdown();
+      navDiv.append(categoriesDropdownDiv);
+    }
   }
+  awaitCategoriesDropdown();
 
   // Append nav to the dom
   startingTag.prepend(navDiv);
