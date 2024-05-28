@@ -1,6 +1,39 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 import { isInternal } from '../../scripts/scripts.js';
+import { addLdJsonScript } from '../../scripts/linking-data.js';
+
+function buildLdJson(container) {
+  // Base page LD+JSON
+  const ldJson = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': window.location.href,
+    url: window.location.href,
+    description: getMetadata('description'),
+    author: {
+      '@type': 'Organization',
+      '@id': 'https://www.famous-smoke.com',
+    },
+    inLanguage: 'en-US',
+  };
+
+  // Change type for category pages
+  if (document.querySelector('.article-list-container')) {
+    ldJson['@type'] = 'CollectionPage';
+  }
+
+  // Add image from metadata
+  const primaryImage = getMetadata('og:image');
+  if (primaryImage) {
+    ldJson.primaryImageOfPage = {
+      '@type': 'ImageObject',
+      contentUrl: getMetadata('og:image'),
+    };
+  }
+
+  addLdJsonScript(container, ldJson);
+}
 
 function getFamousLogo() {
   // Create the image element
@@ -31,6 +64,9 @@ export default async function decorate(block) {
   const footerMeta = getMetadata('footer');
   const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/best-cigars-guide/footer';
   const fragment = await loadFragment(footerPath);
+
+  // add json-ld data for the page
+  buildLdJson(document.body);
 
   // decorate footer DOM
   block.textContent = '';
