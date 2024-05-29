@@ -1,4 +1,6 @@
 const formatUrl = (originalUrl) => {
+  // Strip trailing slash
+  originalUrl = originalUrl.replace(/\/$/, '');
   // Create a URL object based on the original URL
   const url = new URL(originalUrl);
 
@@ -8,6 +10,13 @@ const formatUrl = (originalUrl) => {
   url.port = '';
 
   return url;
+};
+
+const createNavBlock = (main, document) => {
+  const nav = [['Nav']];
+  nav.push([['Breadcrumbs'], ['Categories']]);
+  const navBlock = WebImporter.DOMUtils.createTable(nav, document);
+  main.append(navBlock);
 };
 
 const createMetadataBlock = (main, document) => {
@@ -52,12 +61,7 @@ const createArticleListBlock = (main, document) => {
     linkElement.class = 'button';
     const link = linkElement ? linkElement.href : '';
 
-    const card = [
-      [image],
-      [title],
-      [description],
-      [formatUrl(link)],
-    ];
+    const card = [[image], [title], [description], [formatUrl(link)]];
 
     categories.push(card);
   });
@@ -81,10 +85,14 @@ export default {
   transformDOM: ({ document }) => {
     const main = document.querySelector('main');
 
-    createMetadataBlock(main, document);
+    createNavBlock(main, document);
     createArticleListBlock(main, document);
+    createMetadataBlock(main, document);
     removeSectionsNotForImport(main, document);
 
     return main;
+  },
+  generateDocumentPath: ({ document, url, html, params }) => {
+    return document.querySelector("link[rel='canonical']").getAttribute('href');
   },
 };

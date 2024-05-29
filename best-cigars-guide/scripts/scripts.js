@@ -1,19 +1,36 @@
-import {
-  sampleRUM,
-  buildBlock,
-  loadHeader,
-  loadFooter,
-  decorateButtons,
-  decorateIcons,
-  decorateSections,
-  decorateBlocks,
-  decorateTemplateAndTheme,
-  waitForLCP,
-  loadBlocks,
-  loadCSS,
-} from './aem.js';
+/* eslint-disable max-len */
+// eslint-disable-next-line object-curly-newline
+import { sampleRUM, buildBlock, loadHeader, loadFooter, decorateButtons, decorateIcons, decorateSections, decorateBlocks, decorateTemplateAndTheme, waitForLCP, loadBlocks, loadCSS } from './aem.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
+const CATEGORY_INDEX_PATH = '/best-cigars-guide/index/category-index.json';
+
+let categoryIndexData;
+
+/**
+ * Fetches category list.
+ * @returns {Promise<Array<Object>>} - A promise that resolves to an array of category path objects.
+ */
+export async function fetchCategoryList() {
+  if (!categoryIndexData) {
+    try {
+      const resp = await fetch(CATEGORY_INDEX_PATH);
+      if (resp.ok) {
+        const jsonData = await resp.json();
+        categoryIndexData = jsonData.data.map((item) => ({ path: item.path }));
+      } else {
+        // eslint-disable-next-line no-console
+        console.error('Failed to fetch category list:', resp.status);
+        return [];
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error fetching category list:', error);
+      return [];
+    }
+  }
+  return categoryIndexData;
+}
 
 /**
  * Builds hero block and prepends to main in a new section.
@@ -23,7 +40,7 @@ function buildHeroBlock(main) {
   const h1 = main.querySelector('h1');
   const picture = main.querySelector('picture');
   // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+  if (h1 && picture && h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING) {
     const section = document.createElement('div');
     section.append(buildBlock('hero', { elems: [picture, h1] }));
     main.prepend(section);
@@ -77,7 +94,7 @@ export function decorateMain(main) {
 export function isInternal(path) {
   try {
     const url = new URL(path);
-    return (window.location.hostname === url.hostname && url.pathname.startsWith('/best-cigars-guide'));
+    return window.location.hostname === url.hostname && url.pathname.startsWith('/best-cigars-guide');
   } catch (error) {
     return true;
   }

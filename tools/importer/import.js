@@ -1,7 +1,15 @@
 /*
-* AEM Article Import Script for Best Cigars Guide Articles
-* Run aem import to use this file
-*/
+ * AEM Article Import Script for Best Cigars Guide Articles
+ * Run aem import to use this file
+ */
+
+// Add Nav Block
+const createNavBlock = (post, document) => {
+  const nav = [['Nav']];
+  nav.push([['Breadcrumbs'], ['Categories']]);
+  const navBlock = WebImporter.DOMUtils.createTable(nav, document);
+  post.append(navBlock);
+};
 
 // Import meta data
 // Taken from https://github.com/adobe/helix-importer-ui/blob/main/importer-guidelines.md
@@ -31,7 +39,7 @@ const createMetadataBlock = (post, document) => {
 
   // Get the published date
   const published = new Date(document.querySelector('[property="article:published_time"]').content);
-  meta.publishedDate = `${published.getDate()} ${published.toLocaleDateString('default', { month: 'long'})} ${published.getFullYear()}`;
+  meta.publishedDate = `${published.getDate()} ${published.toLocaleDateString('default', { month: 'long' })} ${published.getFullYear()}`;
   // end modified
 
   // helper to create the metadata block
@@ -54,14 +62,7 @@ const createItemBlocks = (post, document) => {
 
   for (const item of items) {
     // Find general item attributes
-    const cell = [
-      ['Item'],
-      ['Name', item.querySelector('h3') ? item.querySelector('h3').textContent : ''],
-      ['Link', item.querySelector('a').href.replace('http://localhost:3001', 'https://www.famous-smoke.com')],
-      ['Description', item.querySelector('.cigar-info p').textContent],
-      ['Image', item.querySelector('img')],
-      ['Rating', item.querySelectorAll('.star-rating img[src$="star.png"]').length],
-    ];
+    const cell = [['Item'], ['Name', item.querySelector('h3') ? item.querySelector('h3').textContent : ''], ['Link', item.querySelector('a').href.replace('http://localhost:3001', 'https://www.famous-smoke.com')], ['Description', item.querySelector('.cigar-info p').textContent], ['Image', item.querySelector('img')], ['Rating', item.querySelectorAll('.star-rating img[src$="star.png"]').length]];
 
     // Add in cigar specific attributes
     if (item.querySelector('.cigar-stats .stat1 p:last-child')) {
@@ -89,12 +90,13 @@ const createItemBlocks = (post, document) => {
 export default {
   transformDOM: ({ document }) => {
     const post = document.querySelector('article.post');
+    createNavBlock(post, document);
     createItemBlocks(post, document);
     createMetadataBlock(post, document);
     return post;
   },
 
   generateDocumentPath: ({ document, url, html, params }) => {
-    return document.querySelector("link[rel='canonical']").getAttribute("href");
-  }
+    return document.querySelector("link[rel='canonical']").getAttribute('href');
+  },
 };

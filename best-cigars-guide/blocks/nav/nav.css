@@ -1,0 +1,83 @@
+/* General container styling */
+.nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 0;
+}
+
+/* Breadcrumb styling */
+.breadcrumb {
+  font-size: 14px;
+  color: #666;
+  text-align: left; /* Left align text on desktop */
+  flex: 1 1 auto; /* Allow it to take available space */
+}
+
+#breadcrumbs {
+  display: inline-flex; /* Use inline-flex to allow wrapping */
+  flex-wrap: wrap; /* Enable wrapping */
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+#breadcrumbs a {
+  color: #0073aa;
+  text-decoration: none;
+}
+
+#breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-last {
+  color: #4a4a4a;
+  font-weight: 300;
+}
+
+/* Dropdown styling */
+.category-dropdown {
+  font-size: var(--heading-font-size-l);
+  text-align: center; /* Center align dropdown */
+}
+
+.dropcats {
+  display: flex;
+  justify-content: center; /* Center align form */
+}
+
+.dropcats select {
+  font-size: var(--heading-font-size-s);
+  color: #4a4a4a;
+  font-weight: 300;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  width: 100%; /* Ensure select takes full width */
+}
+
+.dropcats select:focus {
+  outline: none;
+  border-color: #0073aa;
+}
+
+/* Responsive styling for mobile devices */
+@media (max-width: 600px) {
+  .nav-row {
+    flex-direction: column; /* Stack items vertically on small screens */
+    align-items: center;
+  }
+
+  .breadcrumb,
+  .category-dropdown {
+    width: 100%; /* Full width for stacked items */
+    margin-bottom: 10px; /* Add some spacing between stacked items */
+    text-align: center; /* Center align text */
+  }
+
+  #breadcrumbs {
+    white-space: normal; /* Allow breadcrumbs to wrap as a whole */
+  }
+}
