@@ -1,6 +1,6 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
-import { isInternal } from '../../scripts/scripts.js';
+import { isInternal, isCategory } from '../../scripts/scripts.js';
 import { addLdJsonScript } from '../../scripts/linking-data.js';
 
 function buildLdJson(container) {
@@ -19,7 +19,7 @@ function buildLdJson(container) {
   };
 
   // Change type for category pages
-  if (document.querySelector('.article-list-container')) {
+  if (isCategory()) {
     ldJson['@type'] = 'CollectionPage';
   }
 
