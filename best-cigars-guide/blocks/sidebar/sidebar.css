@@ -1,0 +1,49 @@
+.article-wrapper {
+    display: flex;
+    max-width: var(--content-width);
+    margin: auto;
+    justify-content: space-between;
+    padding: 0 1rem;
+}
+
+.article-wrapper .section {
+    padding: 0;
+    width: 64%;
+}
+
+.article-wrapper aside {
+    width: 30%;
+    max-width: 315px;
+}
+
+aside h3 {
+    font-size: 0.9em;
+    margin: 0 0 1.2em;
+    font-weight: 700;
+}
+
+aside ul {
+    list-style: none;
+    padding: 0;
+}
+
+aside li {
+    margin: 0 0 12px;
+    font-weight: 300;
+    font-size: 0.7em;
+}
+
+@media (max-width: 600px) {
+    .article-wrapper {
+        display: block;
+    }
+
+    .article-wrapper .section {
+        width: 100%;
+    }
+
+    .article-wrapper aside {
+        width: 100%;
+        max-width: 100%;
+    }
+}
