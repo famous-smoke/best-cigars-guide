@@ -18,8 +18,10 @@ import {
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 const CATEGORY_INDEX_PATH = '/best-cigars-guide/index/category-index.json';
+const ARTICLE_INDEX_PATH = '/best-cigars-guide/index/query-index.json';
 
 let categoryIndexData;
+let articleIndexData;
 
 /**
  * Fetches category list.
@@ -44,6 +46,31 @@ export async function fetchCategoryList() {
     }
   }
   return categoryIndexData;
+}
+
+/**
+ * Fetches article list.
+ * @returns {Promise<Array<Object>>} - A promise that resolves to an array of article path objects.
+ */
+export async function fetchArticleList() {
+  if (!articleIndexData) {
+    try {
+      const resp = await fetch(ARTICLE_INDEX_PATH);
+      if (resp.ok) {
+        const jsonData = await resp.json();
+        articleIndexData = jsonData.data.map((item) => ({ path: item.path, title: item.title }));
+      } else {
+        // eslint-disable-next-line no-console
+        console.error('Failed to fetch category article list:', resp.status);
+        return [];
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error category article list:', error);
+      return [];
+    }
+  }
+  return articleIndexData;
 }
 
 /**
