@@ -3,8 +3,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding: 10px 0;
+  padding: 50px 1rem 15px;
+  max-width: var(--content-width);
+  margin: 0 auto 20px;
 }
 
 /* Breadcrumb styling */
@@ -68,6 +69,7 @@
   .nav-row {
     flex-direction: column; /* Stack items vertically on small screens */
     align-items: center;
+    padding: 10px 16px;
   }
 
   .breadcrumb,

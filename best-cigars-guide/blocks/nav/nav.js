@@ -122,8 +122,8 @@ export default function decorate(block) {
   block.remove();
 
   // Create nav
-  const startingTag = document.querySelector('body > main > div');
-  const navDiv = document.createElement('div');
+  const startingTag = document.querySelector('body > header');
+  const navDiv = document.createElement('nav');
   navDiv.className = 'nav-row';
 
   // Create Breadcrumbs
@@ -142,5 +142,5 @@ export default function decorate(block) {
   awaitCategoriesDropdown();
 
   // Append nav to the dom
-  startingTag.prepend(navDiv);
+  startingTag.after(navDiv);
 }
