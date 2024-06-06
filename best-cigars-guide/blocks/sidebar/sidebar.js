@@ -66,7 +66,6 @@ async function getCategories() {
       list.appendChild(listElement);
     }
   });
-  
   wrap.append(list);
 
   return wrap;
