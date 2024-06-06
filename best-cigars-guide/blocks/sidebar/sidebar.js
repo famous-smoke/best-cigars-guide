@@ -55,7 +55,7 @@ async function getCategories() {
       .slice(0, 3)
       .join('/');
 
-    //List all the articles in this category, but not this article itself
+    // List all the articles in this category, but not this article itself
     if (articleCategoryPath === currentCategoryPath && article.path !== currentArticlePath) {
       const listElement = document.createElement('li');
       const listLink = document.createElement('a');
