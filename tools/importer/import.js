@@ -61,8 +61,14 @@ const createItemBlocks = (post, document) => {
   }
 
   for (const item of items) {
+    // Calculate rating
+    let rating = item.querySelectorAll('.star-rating img[src$="star.png"]').length;
+    if (item.querySelector('.star-rating img[src$="star-half.png"]')) {
+      rating = rating + 0.5;
+    }
+
     // Find general item attributes
-    const cell = [['Item'], ['Name', item.querySelector('h3') ? item.querySelector('h3').textContent : ''], ['Link', item.querySelector('a').href.replace('http://localhost:3001', 'https://www.famous-smoke.com')], ['Description', item.querySelector('.cigar-info p').textContent], ['Image', item.querySelector('img')], ['Rating', item.querySelectorAll('.star-rating img[src$="star.png"]').length]];
+    const cell = [['Item'], ['Name', item.querySelector('h3') ? item.querySelector('h3').textContent : ''], ['Link', item.querySelector('a').href.replace('http://localhost:3001', 'https://www.famous-smoke.com')], ['Description', item.querySelector('.cigar-info p').textContent], ['Image', item.querySelector('img')], ['Rating', rating]];
 
     // Add in cigar specific attributes
     if (item.querySelector('.cigar-stats .stat1 p:last-child')) {
