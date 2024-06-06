@@ -1,6 +1,9 @@
-import { fetchCategoryList } from '../../scripts/scripts.js';
+import { fetchCategoryList, fetchArticleList } from '../../scripts/scripts.js';
 
-function getRelatedArticles() {
+// get the current category name
+const currentCategoryPath = window.location.pathname.split('/').slice(0, 3).join('/');
+
+async function getRelatedArticles() {
   const wrap = document.createElement('div');
   wrap.className = 'sidebar-related-articles';
 
@@ -26,9 +29,8 @@ async function getCategories() {
   heading.textContent = 'CATEGORY';
   wrap.append(heading);
 
-  const currentCategoryPath = window.location.pathname.split('/').slice(0, 3).join('/');
   const categoriesList = await fetchCategoryList();
-  // get the current category name
+
   categoriesList.forEach((category) => {
     const categoryPath = category.path.split('/')
       .slice(0, 3)
@@ -45,9 +47,26 @@ async function getCategories() {
 
   const list = document.createElement('ul');
 
-  // todo: fetch sub-categories from index
-  list.innerHTML = '<li><a href="/best-cigars-guide">Dummy list item</a></li><li><a href="/best-cigars-guide">Dummy list item 2</a></li>';
+  const articleList = await fetchArticleList();
+  const currentArticlePath = window.location.pathname;
 
+  articleList.forEach((article) => {
+    const articleCategoryPath = article.path.split('/')
+      .slice(0, 3)
+      .join('/');
+
+    //List all the articles in this category, but not this article itself
+    if (articleCategoryPath === currentCategoryPath && article.path !== currentArticlePath) {
+      const listElement = document.createElement('li');
+      const listLink = document.createElement('a');
+      const articleTitle = article.title.split('|')[0].trim();
+      listLink.href = article.path;
+      listLink.innerHTML = articleTitle;
+      listElement.appendChild(listLink);
+      list.appendChild(listElement);
+    }
+  });
+  
   wrap.append(list);
 
   return wrap;
@@ -57,7 +76,7 @@ export default async function decorate(block) {
   const categories = await getCategories();
   block.append(categories);
 
-  const relatedArticles = getRelatedArticles();
+  const relatedArticles = await getRelatedArticles();
   block.append(relatedArticles);
 
   return block;
