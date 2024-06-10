@@ -157,9 +157,9 @@ async function renderResults(block, config, filteredData, searchTerms) {
     // optimize images
     searchResults.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }])));
   } else {
-    const noResultsMessage = document.createElement('li');
+    const noResultsMessage = document.createElement('div');
     searchResults.classList.add('no-results');
-    noResultsMessage.textContent = config.placeholders.searchNoResults || 'No results found.';
+    noResultsMessage.textContent = 'No results found.';
     searchResults.append(noResultsMessage);
   }
 }
