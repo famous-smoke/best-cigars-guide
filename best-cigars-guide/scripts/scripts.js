@@ -1,20 +1,6 @@
 /* eslint-disable max-len */
 // eslint-disable-next-line object-curly-newline
-import {
-  sampleRUM,
-  buildBlock,
-  loadHeader,
-  loadFooter,
-  decorateButtons,
-  decorateIcons,
-  decorateSections,
-  decorateBlocks,
-  decorateTemplateAndTheme,
-  waitForLCP,
-  loadBlocks,
-  loadCSS,
-  decorateBlock,
-} from './aem.js';
+import { sampleRUM, buildBlock, loadHeader, loadFooter, decorateButtons, decorateIcons, decorateSections, decorateBlocks, decorateTemplateAndTheme, waitForLCP, loadBlocks, loadCSS, decorateBlock } from './aem.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 const CATEGORY_INDEX_PATH = '/best-cigars-guide/index/category-index.json';
@@ -96,13 +82,20 @@ export function isCategory() {
 }
 
 /**
+ * check if this is the search page
+ */
+export function isSearchPage() {
+  return !!document.querySelector('#search');
+}
+
+/**
  * builds sidebar block appends to main
  * @param {Element} main The container element
  */
 function buildSidebarBlock(main) {
   const sidebarBlock = document.querySelector('main aside');
 
-  if (!isCategory() && !sidebarBlock && main.tagName === 'MAIN') {
+  if (!isCategory() && !isSearchPage() && !sidebarBlock && main.tagName === 'MAIN') {
     const container = document.querySelector('main');
     const sidebar = document.createElement('aside');
     sidebar.className = 'sidebar-wrapper';
