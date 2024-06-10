@@ -1,7 +1,68 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
-import { isInternal, isCategory } from '../../scripts/scripts.js';
+import { isInternal, isCategory, isArticlePage } from '../../scripts/scripts.js';
 import { addLdJsonScript } from '../../scripts/linking-data.js';
+
+function dateToISOString(dateStr) {
+  // Check if dateStr is a string
+  if (typeof dateStr !== 'string') {
+    return null;
+  }
+
+  try {
+    // Parse the date string into a Date object
+    const date = new Date(dateStr);
+
+    // Check if the date is valid
+    if (date.isNaN) {
+      return null;
+    }
+
+    // Convert the Date object to ISO string format
+    return date.toISOString();
+  } catch (error) {
+    // Return null if there is an error
+    return null;
+  }
+}
+
+function createBreadcrumbsSchema() {
+  const breadcrumbDiv = document.querySelector('.breadcrumb #breadcrumbs');
+
+  if (!breadcrumbDiv) {
+    return null;
+  }
+
+  const spans = breadcrumbDiv.querySelectorAll('span');
+  const itemListElement = [];
+
+  spans.forEach((span, index) => {
+    const anchor = span.querySelector('a');
+    const position = index + 1;
+    const item = {
+      '@type': 'ListItem',
+      position,
+      item: {},
+    };
+
+    if (anchor) {
+      item.item['@id'] = anchor.href;
+      item.item.name = anchor.textContent;
+    } else {
+      item.item['@id'] = window.location.href;
+      item.item.name = span.textContent;
+    }
+
+    itemListElement.push(item);
+  });
+
+  const breadcrumbsSchema = {
+    '@type': 'BreadcrumbList',
+    itemListElement,
+  };
+
+  return breadcrumbsSchema;
+}
 
 function buildLdJson(container) {
   // Base page LD+JSON
@@ -21,6 +82,24 @@ function buildLdJson(container) {
   // Change type for category pages
   if (isCategory()) {
     ldJson['@type'] = 'CollectionPage';
+  }
+
+  // Add Article Page Data
+  if (isArticlePage()) {
+    // Add datePublished from metadata
+    const date = dateToISOString(getMetadata('publisheddate'));
+    if (date) {
+      ldJson.datePublished = date;
+    }
+
+    // Add dateModified
+    // Requires fetching the article from the index
+  }
+
+  // Add breadcrumb when available
+  const breadcrumbsSchema = createBreadcrumbsSchema();
+  if (breadcrumbsSchema) {
+    ldJson.breadcrumb = breadcrumbsSchema;
   }
 
   // Add image from metadata

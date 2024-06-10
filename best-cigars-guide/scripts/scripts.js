@@ -74,6 +74,23 @@ function buildHeroBlock(main) {
   }
 }
 
+export function isArticlePage() {
+  // Select the div with class 'breadcrumb'
+  const breadcrumbDiv = document.querySelector('.breadcrumb');
+
+  // Check if the breadcrumb div exists
+  if (breadcrumbDiv) {
+    // Select all span tags within the breadcrumb div
+    const spans = breadcrumbDiv.querySelectorAll('span');
+
+    // Check if there are exactly 3 span tags
+    if (spans.length === 3) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /**
  * check if this is a category listing page
  */
