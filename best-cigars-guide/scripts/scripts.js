@@ -44,7 +44,7 @@ export async function fetchArticleList() {
       const resp = await fetch(ARTICLE_INDEX_PATH);
       if (resp.ok) {
         const jsonData = await resp.json();
-        articleIndexData = jsonData.data.map((item) => ({ path: item.path, title: item.title }));
+        articleIndexData = jsonData.data.map((item) => ({ path: item.path, title: item.title, lastModified: item.lastModified }));
       } else {
         // eslint-disable-next-line no-console
         console.error('Failed to fetch category article list:', resp.status);
@@ -57,6 +57,24 @@ export async function fetchArticleList() {
     }
   }
   return articleIndexData;
+}
+
+/**
+ * Fetches article information.
+ * @returns {Promise<Array<Object>>} - A promise that resolves to an array of article path objects.
+ */
+export async function fetchArticleInfo() {
+  // Fetch article list
+  if (!articleIndexData) {
+    articleIndexData = fetchArticleList();
+  }
+  // Get the current URL path
+  const currentPath = window.location.pathname;
+
+  // Find the article that matches the current URL path
+  const matchingArticle = articleIndexData.find((article) => article.path === currentPath);
+
+  return matchingArticle || null;
 }
 
 /**

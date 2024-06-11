@@ -1,23 +1,31 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
-import { isInternal, isCategory, isArticlePage } from '../../scripts/scripts.js';
+import { isInternal, isCategory, isArticlePage, fetchArticleInfo } from '../../scripts/scripts.js';
 import { addLdJsonScript } from '../../scripts/linking-data.js';
 
-function dateToISOString(dateStr) {
-  // Check if dateStr is a string
-  if (typeof dateStr !== 'string') {
-    return null;
-  }
+function dateToISOString(input) {
+  let date;
 
   try {
-    // Parse the date string into a Date object
-    const date = new Date(dateStr);
+    // Check if the input is a number (Unix timestamp)
+    if (typeof input === 'number') {
+      date = new Date(input * 1000);
+    } else if (typeof input === 'string') {
+      // Check if the string is a Unix timestamp
+      if (/^\d+$/.test(input)) {
+        date = new Date(parseInt(input, 10) * 1000);
+      } else {
+        // Otherwise, assume it's a date string
+        date = new Date(input);
+      }
+    } else {
+      return null; // Return null if the input is neither a number nor a string
+    }
 
     // Check if the date is valid
     if (date.isNaN) {
       return null;
     }
-
     // Convert the Date object to ISO string format
     return date.toISOString();
   } catch (error) {
@@ -64,7 +72,7 @@ function createBreadcrumbsSchema() {
   return breadcrumbsSchema;
 }
 
-function buildLdJson(container) {
+async function buildLdJson(container) {
   // Base page LD+JSON
   const ldJson = {
     '@context': 'https://schema.org',
@@ -87,13 +95,17 @@ function buildLdJson(container) {
   // Add Article Page Data
   if (isArticlePage()) {
     // Add datePublished from metadata
-    const date = dateToISOString(getMetadata('publisheddate'));
-    if (date) {
-      ldJson.datePublished = date;
+    const datePublished = dateToISOString(getMetadata('publisheddate'));
+    if (datePublished) {
+      ldJson.datePublished = datePublished;
     }
 
     // Add dateModified
-    // Requires fetching the article from the index
+    const articleInfo = await fetchArticleInfo();
+    if (articleInfo) {
+      const lastModified = dateToISOString(articleInfo.lastModified);
+      ldJson.dateModified = lastModified;
+    }
   }
 
   // Add breadcrumb when available
@@ -110,6 +122,8 @@ function buildLdJson(container) {
       contentUrl: getMetadata('og:image'),
     };
   }
+
+  // console.log(ldJson);
 
   addLdJsonScript(container, ldJson);
 }
