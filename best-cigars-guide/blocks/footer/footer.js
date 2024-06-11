@@ -85,11 +85,6 @@ async function buildLdJson(container) {
       '@id': 'https://www.famous-smoke.com',
     },
     inLanguage: 'en-US',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: 'https://www.famous-smoke.com/best-cigars-guide/search?q={query}',
-      query: 'required',
-    },
   };
 
   // Change type for category pages
@@ -127,8 +122,6 @@ async function buildLdJson(container) {
       contentUrl: getMetadata('og:image'),
     };
   }
-
-  console.log(ldJson);
 
   addLdJsonScript(container, ldJson);
 }
