@@ -1,0 +1,7 @@
+.sidebar-related-articles a::before {
+    content: url('/best-cigars-guide/icons/external-link.svg');
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    padding-right: 0.5em;
+}
