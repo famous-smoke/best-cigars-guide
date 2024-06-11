@@ -19,7 +19,7 @@ export async function fetchCategoryList() {
       const resp = await fetch(CATEGORY_INDEX_PATH);
       if (resp.ok) {
         const jsonData = await resp.json();
-        categoryIndexData = jsonData.data.map((item) => ({ path: item.path }));
+        categoryIndexData = jsonData.data.map((item) => ({ path: item.path, title: item.title }));
       } else {
         // eslint-disable-next-line no-console
         console.error('Failed to fetch category list:', resp.status);
