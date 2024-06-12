@@ -1,6 +1,6 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
-import { isInternal, isCategory, isArticlePage, fetchArticleInfo } from '../../scripts/scripts.js';
+import { isInternal, isCategory, isArticlePage, fetchArticleInfo, fetchArticlesInCategory } from '../../scripts/scripts.js';
 import { addLdJsonScript } from '../../scripts/linking-data.js';
 
 function dateToISOString(input) {
@@ -72,6 +72,39 @@ function createBreadcrumbsSchema() {
   return breadcrumbsSchema;
 }
 
+async function createBlogPostingSchema() {
+  const articlesInCategory = await fetchArticlesInCategory();
+
+  if (!articlesInCategory) {
+    return null;
+  }
+  const blogPostings = [];
+
+  articlesInCategory.forEach((article) => {
+    const blogPosting = {
+      '@type': 'BlogPosting',
+      name: article.title.split('|')[0].trim(),
+      mainEntityOfPage: {
+        '@type': 'BlogPosting',
+        '@id': window.location.origin + article.path,
+      },
+      dateModified: dateToISOString(article.lastModified),
+      datePublished: dateToISOString(article.publishedDate),
+      publisher: {
+        '@type': 'Organization',
+        name: 'Famous Smoke Shop - Best Cigars Guide',
+        '@id': 'https://www.famous-smoke.com/best-cigars-guide',
+        logo: `${window.location.origin}/best-cigars-guide/icons/famous-smoke-shop-logo.svg`,
+      },
+      image: window.location.origin + article.image,
+    };
+
+    blogPostings.push(blogPosting);
+  });
+
+  return blogPostings.length > 0 ? blogPostings : null;
+}
+
 async function buildLdJson(container) {
   // Base page LD+JSON
   const ldJson = {
@@ -80,9 +113,11 @@ async function buildLdJson(container) {
     '@id': window.location.href,
     url: window.location.href,
     description: getMetadata('description'),
-    author: {
+    publisher: {
       '@type': 'Organization',
-      '@id': 'https://www.famous-smoke.com',
+      name: 'Famous Smoke Shop - Best Cigars Guide',
+      '@id': 'https://www.famous-smoke.com/best-cigars-guide',
+      logo: `${window.location.origin}/best-cigars-guide/icons/famous-smoke-shop-logo.svg`,
     },
     inLanguage: 'en-US',
   };
@@ -90,10 +125,18 @@ async function buildLdJson(container) {
   // Change type for category pages
   if (isCategory()) {
     ldJson['@type'] = 'CollectionPage';
+
+    // Add BlogPosting Schema
+    const blogPostingSchema = await createBlogPostingSchema();
+    if (blogPostingSchema) {
+      ldJson.hasPart = blogPostingSchema;
+    }
   }
 
   // Add Article Page Data
   if (isArticlePage()) {
+    ldJson['@type'] = 'BlogPosting';
+
     // Add datePublished from metadata
     const datePublished = dateToISOString(getMetadata('publisheddate'));
     if (datePublished) {

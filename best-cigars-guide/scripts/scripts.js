@@ -44,7 +44,7 @@ export async function fetchArticleList() {
       const resp = await fetch(ARTICLE_INDEX_PATH);
       if (resp.ok) {
         const jsonData = await resp.json();
-        articleIndexData = jsonData.data.map((item) => ({ path: item.path, title: item.title, lastModified: item.lastModified }));
+        articleIndexData = jsonData.data.map((item) => ({ path: item.path, title: item.title, lastModified: item.lastModified, publishedDate: item.published, image: item.image }));
       } else {
         // eslint-disable-next-line no-console
         console.error('Failed to fetch category article list:', resp.status);
@@ -66,8 +66,9 @@ export async function fetchArticleList() {
 export async function fetchArticleInfo() {
   // Fetch article list
   if (!articleIndexData) {
-    articleIndexData = fetchArticleList();
+    articleIndexData = await fetchArticleList();
   }
+
   // Get the current URL path
   const currentPath = window.location.pathname;
 
@@ -75,6 +76,21 @@ export async function fetchArticleInfo() {
   const matchingArticle = articleIndexData.find((article) => article.path === currentPath);
 
   return matchingArticle || null;
+}
+
+export async function fetchArticlesInCategory() {
+  // Fetch article list
+  if (!articleIndexData) {
+    articleIndexData = await fetchArticleList();
+  }
+
+  // Get the current category path
+  const currentCategoryPath = window.location.pathname.split('/').slice(0, 3).join('/');
+
+  // Find the articles that contain the current category path in their path
+  const matchingArticles = articleIndexData.filter((article) => article.path.includes(currentCategoryPath));
+
+  return matchingArticles.length > 0 ? matchingArticles : null;
 }
 
 /**
