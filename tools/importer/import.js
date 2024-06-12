@@ -57,7 +57,7 @@ const createItemBlocks = (post, document) => {
   const items = document.querySelectorAll('.cigars-listing .cigar');
   if (!items || items.length === 0) {
     // no blocks to add
-    return [];
+    return;
   }
 
   for (const item of items) {
@@ -93,11 +93,31 @@ const createItemBlocks = (post, document) => {
   }
 };
 
+// Add the related post links
+const createRelatedLinkBlock = (post, document) => {
+  const relatedLinks = document.querySelectorAll('.related li');
+
+  if (!relatedLinks || relatedLinks.length === 0) {
+    // no related links to add
+    return;
+  }
+
+  const cell = [];
+  cell.push(['Related']);
+  for (const link of relatedLinks) {
+    cell.push([link.textContent, link.querySelector('a').href.replace('http://localhost:3001', 'https://www.famous-smoke.com')]);
+  }
+
+  const block = WebImporter.DOMUtils.createTable(cell, document);
+  post.append(block);
+}
+
 export default {
   transformDOM: ({ document }) => {
     const post = document.querySelector('article.post');
     createNavBlock(post, document);
     createItemBlocks(post, document);
+    createRelatedLinkBlock(post, document);
     createMetadataBlock(post, document);
     return post;
   },
