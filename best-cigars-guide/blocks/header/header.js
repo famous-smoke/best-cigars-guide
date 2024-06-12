@@ -113,7 +113,7 @@ export default async function decorate(block) {
   const navText = navBrand.innerHTML;
   navBrand.innerHTML = `
   <a href="/best-cigars-guide" rel="home" class="brand-logo" title="Best Cigars Guide Homepage">
-    <img src="/best-cigars-guide/icons/famous-smoke-shop-logo.svg" alt="Famous Smoke Shop Logo">
+    <img src="/best-cigars-guide/icons/famous-smoke-shop-logo.svg" alt="Famous Smoke Shop Logo" height="55" width="128">
     ${navText}
   </a>
   `;
