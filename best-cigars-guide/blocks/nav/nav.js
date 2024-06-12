@@ -79,11 +79,7 @@ async function createCategoriesDropdown() {
   categoriesList.forEach((category) => {
     const option = document.createElement('option');
     option.value = category.path;
-    option.textContent = category.path
-      .split('/')
-      .pop()
-      .replace(/-/g, ' ')
-      .replace(/\b\w/g, (char) => char.toUpperCase());
+    option.textContent = category.title.split('|')[0].trim();
     const categoryPath = category.path.split('/').slice(0, 3).join('/');
     if (categoryPath === currentCategoryPath) {
       option.selected = true;
