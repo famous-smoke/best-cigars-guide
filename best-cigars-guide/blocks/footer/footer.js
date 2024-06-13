@@ -83,6 +83,8 @@ async function createBlogPostingSchema() {
   articlesInCategory.forEach((article) => {
     const blogPosting = {
       '@type': 'BlogPosting',
+      '@id': window.location.origin + article.path,
+      url: window.location.origin + article.path,
       name: article.title.split('|')[0].trim(),
       mainEntityOfPage: {
         '@type': 'BlogPosting',
@@ -90,15 +92,16 @@ async function createBlogPostingSchema() {
       },
       dateModified: dateToISOString(article.lastModified),
       datePublished: dateToISOString(article.publishedDate),
-      publisher: {
+      author: {
         '@type': 'Organization',
         name: 'Famous Smoke Shop - Best Cigars Guide',
         '@id': 'https://www.famous-smoke.com/best-cigars-guide',
+        url: 'https://www.famous-smoke.com/best-cigars-guide',
         logo: `${window.location.origin}/best-cigars-guide/icons/famous-smoke-shop-logo.svg`,
       },
-      image: window.location.origin + article.image,
+      image: `https://www.famous-smoke.com${article.image}`,
     };
-
+    blogPosting.headline = blogPosting.name;
     blogPostings.push(blogPosting);
   });
 
@@ -117,6 +120,7 @@ async function buildLdJson(container) {
       '@type': 'Organization',
       name: 'Famous Smoke Shop - Best Cigars Guide',
       '@id': 'https://www.famous-smoke.com/best-cigars-guide',
+      url: 'https://www.famous-smoke.com/best-cigars-guide',
       logo: `${window.location.origin}/best-cigars-guide/icons/famous-smoke-shop-logo.svg`,
     },
     inLanguage: 'en-US',
@@ -135,8 +139,6 @@ async function buildLdJson(container) {
 
   // Add Article Page Data
   if (isArticlePage()) {
-    ldJson['@type'] = 'BlogPosting';
-
     // Add datePublished from metadata
     const datePublished = dateToISOString(getMetadata('publisheddate'));
     if (datePublished) {
@@ -149,21 +151,30 @@ async function buildLdJson(container) {
       const lastModified = dateToISOString(articleInfo.lastModified);
       ldJson.dateModified = lastModified;
     }
+
+    // Add author
+    ldJson.author = ldJson.publisher;
+
+    // Add headline
+    ldJson.headline = articleInfo.title.split('|')[0].trim();
+
+    // Set mainEntityOfPage to identify this as a blog post not just a web page
+    ldJson.mainEntityOfPage = {
+      '@type': 'BlogPosting',
+      '@id': ldJson.url,
+    };
+  }
+
+  // Add image from metadata
+  const primaryImage = getMetadata('og:image');
+  if (primaryImage) {
+    ldJson.image = primaryImage;
   }
 
   // Add breadcrumb when available
   const breadcrumbsSchema = createBreadcrumbsSchema();
   if (breadcrumbsSchema) {
     ldJson.breadcrumb = breadcrumbsSchema;
-  }
-
-  // Add image from metadata
-  const primaryImage = getMetadata('og:image');
-  if (primaryImage) {
-    ldJson.primaryImageOfPage = {
-      '@type': 'ImageObject',
-      contentUrl: getMetadata('og:image'),
-    };
   }
 
   addLdJsonScript(container, ldJson);
