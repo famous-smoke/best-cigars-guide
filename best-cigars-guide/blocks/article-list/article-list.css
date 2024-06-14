@@ -45,6 +45,11 @@
   transition: transform 0.3s ease;
   line-height: 0;
   object-fit: cover;
+  aspect-ratio: 327 / 185;
+}
+
+.hero-container ~ .article-list-container .article-list-card-image img {
+  aspect-ratio: 327 / 215;
 }
 
 .article-list-card-image a:hover img {
