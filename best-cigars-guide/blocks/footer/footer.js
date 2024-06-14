@@ -1,4 +1,4 @@
-import { getMetadata } from '../../scripts/aem.js';
+import { createOptimizedPicture, getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 import { isInternal, isCategory, isArticlePage, fetchArticleInfo, fetchArticlesInCategory } from '../../scripts/scripts.js';
 import { addLdJsonScript } from '../../scripts/linking-data.js';
@@ -182,15 +182,20 @@ async function buildLdJson(container) {
 
 function getFamousLogo() {
   // Create the image element
-  const image = document.createElement('img');
-  image.src = '/best-cigars-guide/icons/famous-smoke-shop-logo-gray.png';
-  image.className = 'footer-logo';
+  const picture = createOptimizedPicture(
+    '/best-cigars-guide/icons/famous-smoke-shop-logo-gray.png',
+    'Famous Smoke Shop Logo',
+  );
+  picture.className = 'footer-logo';
+  const img = picture.lastElementChild;
+  img.width = 120;
+  img.height = 57;
 
   // Add the Famous link, with the logo inside of it
   const link = document.createElement('a');
   link.href = 'https://www.famous-smoke.com';
   link.className = 'footer-logo-link';
-  link.appendChild(image);
+  link.appendChild(picture);
 
   // Wrap it up
   const wrap = document.createElement('div');
