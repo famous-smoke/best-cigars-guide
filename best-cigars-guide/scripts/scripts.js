@@ -44,7 +44,7 @@ export async function fetchArticleList() {
       const resp = await fetch(ARTICLE_INDEX_PATH);
       if (resp.ok) {
         const jsonData = await resp.json();
-        articleIndexData = jsonData.data.map((item) => ({ path: item.path, title: item.title }));
+        articleIndexData = jsonData.data.map((item) => ({ path: item.path, title: item.title, lastModified: item.lastModified, publishedDate: item.published, image: item.image }));
       } else {
         // eslint-disable-next-line no-console
         console.error('Failed to fetch category article list:', resp.status);
@@ -60,6 +60,40 @@ export async function fetchArticleList() {
 }
 
 /**
+ * Fetches article information.
+ * @returns {Promise<Array<Object>>} - A promise that resolves to an array of article path objects.
+ */
+export async function fetchArticleInfo() {
+  // Fetch article list
+  if (!articleIndexData) {
+    articleIndexData = await fetchArticleList();
+  }
+
+  // Get the current URL path
+  const currentPath = window.location.pathname;
+
+  // Find the article that matches the current URL path
+  const matchingArticle = articleIndexData.find((article) => article.path === currentPath);
+
+  return matchingArticle || null;
+}
+
+export async function fetchArticlesInCategory() {
+  // Fetch article list
+  if (!articleIndexData) {
+    articleIndexData = await fetchArticleList();
+  }
+
+  // Get the current category path
+  const currentCategoryPath = window.location.pathname.split('/').slice(0, 3).join('/');
+
+  // Find the articles that contain the current category path in their path
+  const matchingArticles = articleIndexData.filter((article) => article.path.includes(currentCategoryPath));
+
+  return matchingArticles.length > 0 ? matchingArticles : null;
+}
+
+/**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
@@ -72,6 +106,23 @@ function buildHeroBlock(main) {
     section.append(buildBlock('hero', { elems: [picture, h1] }));
     main.prepend(section);
   }
+}
+
+export function isArticlePage() {
+  // Select the div with class 'breadcrumb'
+  const breadcrumbDiv = document.querySelector('.breadcrumb');
+
+  // Check if the breadcrumb div exists
+  if (breadcrumbDiv) {
+    // Select all span tags within the breadcrumb div
+    const spans = breadcrumbDiv.querySelectorAll('span');
+
+    // Check if there are exactly 3 span tags
+    if (spans.length === 3) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /**

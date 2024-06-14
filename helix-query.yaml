@@ -41,6 +41,9 @@ indices:
       text:
         select: main > div p
         value: words(textContent(el), 0, 5000)
+      published:
+        select: head > meta[name="publisheddate"]
+        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
   categories:
     include:
       - /best-cigars-guide/best-cigars-by-country

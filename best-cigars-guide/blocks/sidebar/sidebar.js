@@ -3,7 +3,7 @@ import { fetchCategoryList, fetchArticleList } from '../../scripts/scripts.js';
 // get the current category name
 const currentCategoryPath = window.location.pathname.split('/').slice(0, 3).join('/');
 
-async function getCategories() {
+async function getCategoryArticles() {
   const wrap = document.createElement('div');
   wrap.className = 'sidebar-categories';
 
@@ -13,9 +13,7 @@ async function getCategories() {
   const categoriesList = await fetchCategoryList();
 
   categoriesList.forEach((category) => {
-    const categoryPath = category.path.split('/')
-      .slice(0, 3)
-      .join('/');
+    const categoryPath = category.path.split('/').slice(0, 3).join('/');
 
     if (categoryPath === currentCategoryPath) {
       heading.innerText = category.path
@@ -32,9 +30,7 @@ async function getCategories() {
   const currentArticlePath = window.location.pathname;
 
   articleList.forEach((article) => {
-    const articleCategoryPath = article.path.split('/')
-      .slice(0, 3)
-      .join('/');
+    const articleCategoryPath = article.path.split('/').slice(0, 3).join('/');
 
     // List all the articles in this category, but not this article itself
     if (articleCategoryPath === currentCategoryPath && article.path !== currentArticlePath) {
@@ -53,7 +49,7 @@ async function getCategories() {
 }
 
 export default async function decorate(block) {
-  const categories = await getCategories();
+  const categories = await getCategoryArticles();
   block.prepend(categories);
 
   return block;

@@ -1,9 +1,114 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
-import { isInternal, isCategory } from '../../scripts/scripts.js';
+import { isInternal, isCategory, isArticlePage, fetchArticleInfo, fetchArticlesInCategory } from '../../scripts/scripts.js';
 import { addLdJsonScript } from '../../scripts/linking-data.js';
 
-function buildLdJson(container) {
+function dateToISOString(input) {
+  let date;
+
+  try {
+    // Check if the input is a number (Unix timestamp)
+    if (typeof input === 'number') {
+      date = new Date(input * 1000);
+    } else if (typeof input === 'string') {
+      // Check if the string is a Unix timestamp
+      if (/^\d+$/.test(input)) {
+        date = new Date(parseInt(input, 10) * 1000);
+      } else {
+        // Otherwise, assume it's a date string
+        date = new Date(input);
+      }
+    } else {
+      return null; // Return null if the input is neither a number nor a string
+    }
+
+    // Check if the date is valid
+    if (date.isNaN) {
+      return null;
+    }
+    // Convert the Date object to ISO string format
+    return date.toISOString();
+  } catch (error) {
+    // Return null if there is an error
+    return null;
+  }
+}
+
+function createBreadcrumbsSchema() {
+  const breadcrumbDiv = document.querySelector('.breadcrumb #breadcrumbs');
+
+  if (!breadcrumbDiv) {
+    return null;
+  }
+
+  const spans = breadcrumbDiv.querySelectorAll('span');
+  const itemListElement = [];
+
+  spans.forEach((span, index) => {
+    const anchor = span.querySelector('a');
+    const position = index + 1;
+    const item = {
+      '@type': 'ListItem',
+      position,
+      item: {},
+    };
+
+    if (anchor) {
+      item.item['@id'] = anchor.href;
+      item.item.name = anchor.textContent;
+    } else {
+      item.item['@id'] = window.location.href;
+      item.item.name = span.textContent;
+    }
+
+    itemListElement.push(item);
+  });
+
+  const breadcrumbsSchema = {
+    '@type': 'BreadcrumbList',
+    itemListElement,
+  };
+
+  return breadcrumbsSchema;
+}
+
+async function createBlogPostingSchema() {
+  const articlesInCategory = await fetchArticlesInCategory();
+
+  if (!articlesInCategory) {
+    return null;
+  }
+  const blogPostings = [];
+
+  articlesInCategory.forEach((article) => {
+    const blogPosting = {
+      '@type': 'BlogPosting',
+      '@id': window.location.origin + article.path,
+      url: window.location.origin + article.path,
+      name: article.title.split('|')[0].trim(),
+      mainEntityOfPage: {
+        '@type': 'BlogPosting',
+        '@id': window.location.origin + article.path,
+      },
+      dateModified: dateToISOString(article.lastModified),
+      datePublished: dateToISOString(article.publishedDate),
+      author: {
+        '@type': 'Organization',
+        name: 'Famous Smoke Shop - Best Cigars Guide',
+        '@id': 'https://www.famous-smoke.com/best-cigars-guide',
+        url: 'https://www.famous-smoke.com/best-cigars-guide',
+        logo: `${window.location.origin}/best-cigars-guide/icons/famous-smoke-shop-logo.svg`,
+      },
+      image: `https://www.famous-smoke.com${article.image}`,
+    };
+    blogPosting.headline = blogPosting.name;
+    blogPostings.push(blogPosting);
+  });
+
+  return blogPostings.length > 0 ? blogPostings : null;
+}
+
+async function buildLdJson(container) {
   // Base page LD+JSON
   const ldJson = {
     '@context': 'https://schema.org',
@@ -11,9 +116,12 @@ function buildLdJson(container) {
     '@id': window.location.href,
     url: window.location.href,
     description: getMetadata('description'),
-    author: {
+    publisher: {
       '@type': 'Organization',
-      '@id': 'https://www.famous-smoke.com',
+      name: 'Famous Smoke Shop - Best Cigars Guide',
+      '@id': 'https://www.famous-smoke.com/best-cigars-guide',
+      url: 'https://www.famous-smoke.com/best-cigars-guide',
+      logo: `${window.location.origin}/best-cigars-guide/icons/famous-smoke-shop-logo.svg`,
     },
     inLanguage: 'en-US',
   };
@@ -21,15 +129,52 @@ function buildLdJson(container) {
   // Change type for category pages
   if (isCategory()) {
     ldJson['@type'] = 'CollectionPage';
+
+    // Add BlogPosting Schema
+    const blogPostingSchema = await createBlogPostingSchema();
+    if (blogPostingSchema) {
+      ldJson.hasPart = blogPostingSchema;
+    }
+  }
+
+  // Add Article Page Data
+  if (isArticlePage()) {
+    // Add datePublished from metadata
+    const datePublished = dateToISOString(getMetadata('publisheddate'));
+    if (datePublished) {
+      ldJson.datePublished = datePublished;
+    }
+
+    // Add dateModified
+    const articleInfo = await fetchArticleInfo();
+    if (articleInfo) {
+      const lastModified = dateToISOString(articleInfo.lastModified);
+      ldJson.dateModified = lastModified;
+    }
+
+    // Add author
+    ldJson.author = ldJson.publisher;
+
+    // Add headline
+    ldJson.headline = articleInfo.title.split('|')[0].trim();
+
+    // Set mainEntityOfPage to identify this as a blog post not just a web page
+    ldJson.mainEntityOfPage = {
+      '@type': 'BlogPosting',
+      '@id': ldJson.url,
+    };
   }
 
   // Add image from metadata
   const primaryImage = getMetadata('og:image');
   if (primaryImage) {
-    ldJson.primaryImageOfPage = {
-      '@type': 'ImageObject',
-      contentUrl: getMetadata('og:image'),
-    };
+    ldJson.image = primaryImage;
+  }
+
+  // Add breadcrumb when available
+  const breadcrumbsSchema = createBreadcrumbsSchema();
+  if (breadcrumbsSchema) {
+    ldJson.breadcrumb = breadcrumbsSchema;
   }
 
   addLdJsonScript(container, ldJson);
