@@ -1,3 +1,5 @@
+import getCaRedirects from './ca-redirects.js';
+
 /*
  * AEM Article Import Script for Best Cigars Guide Articles
  * Run aem import to use this file
@@ -96,6 +98,7 @@ const createItemBlocks = (post, document) => {
 // Add the related post links
 const createRelatedLinkBlock = (post, document) => {
   const relatedLinks = document.querySelectorAll('.related li');
+  const redirects = getCaRedirects();
 
   if (!relatedLinks || relatedLinks.length === 0) {
     // no related links to add
@@ -105,7 +108,16 @@ const createRelatedLinkBlock = (post, document) => {
   const cell = [];
   cell.push(['Related']);
   for (const link of relatedLinks) {
-    cell.push([link.textContent, link.querySelector('a').href.replace('http://localhost:3001', 'https://www.famous-smoke.com')]);
+    const baseUrl = 'https://www.famous-smoke.com';
+    let href = link.querySelector('a').href.replace('http://localhost:3001', baseUrl);
+
+    // Check if the link is a CA link with a redirect
+    const path = href.replace(baseUrl, '');
+    if (path.startsWith('/cigaradvisor/') && path in redirects) {
+      href = baseUrl + redirects[path];
+    }
+
+    cell.push([link.textContent, href]);
   }
 
   const block = WebImporter.DOMUtils.createTable(cell, document);
