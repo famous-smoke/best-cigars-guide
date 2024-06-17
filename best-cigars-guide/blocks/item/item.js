@@ -51,12 +51,7 @@ function renderRatingStars(data) {
  */
 function renderStats(data) {
   // list of possible stat fields from block data
-  const stats = [
-    'Country',
-    'Strength',
-    'Wrapper',
-    'Color',
-  ];
+  const stats = ['Country', 'Strength', 'Wrapper', 'Color'];
 
   let output = '';
   // eslint-disable-next-line no-plusplus
@@ -79,7 +74,7 @@ function render(data) {
 
   return `
     <h3>${data.Name}</h3>
-    <a href="${data.Link}">
+    <a href="${data.Link}" target="_blank">
         ${data.Image}
     </a>
     <div class="item-info">
