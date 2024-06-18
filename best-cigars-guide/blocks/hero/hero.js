@@ -63,7 +63,7 @@ function addSecondParagraphToHero() {
   }
 }
 
-// Format picute path
+// Format picture path
 function formatPicturePath() {
   const picture = document.querySelector('.hero picture');
   if (picture) {
