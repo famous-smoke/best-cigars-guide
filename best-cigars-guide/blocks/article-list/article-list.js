@@ -75,8 +75,19 @@ export default function decorate(block) {
     }
   });
 
-  // optimize images
-  ul.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }])));
+  // optimize and format images
+  ul.querySelectorAll('img').forEach((img) => {
+    // Create a new URL object
+    const url = new URL(img.src, window.location.origin);
+
+    // Check if the pathname begins with "/best-cigars-guide"
+    if (!url.pathname.startsWith('/best-cigars-guide')) {
+      // Prepend "/best-cigars-guide" to the pathname
+      url.pathname = `/best-cigars-guide${url.pathname}`;
+    }
+
+    img.closest('picture').replaceWith(createOptimizedPicture(url.href, img.alt, false, [{ width: '750' }]));
+  });
 
   // Remove any empty div tags
   [...ul.querySelectorAll('div')].forEach((div) => {
