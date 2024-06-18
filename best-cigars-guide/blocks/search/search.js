@@ -314,6 +314,18 @@ function searchBox(block, config) {
 }
 
 /**
+ * Creates robots meta tag in head
+ */
+function addRobots() {
+  const el = document.createElement('meta');
+
+  el.name = 'robots';
+  el.content = 'noindex,follow';
+
+  document.head.appendChild(el);
+}
+
+/**
  * Main function to decorate the block with search functionality.
  * @param {HTMLElement} block - The block element to be decorated.
  */
@@ -329,4 +341,5 @@ export default async function decorate(block) {
   }
 
   decorateIcons(block);
+  addRobots();
 }
