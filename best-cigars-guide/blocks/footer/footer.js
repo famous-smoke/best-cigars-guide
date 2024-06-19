@@ -1,6 +1,6 @@
 import { createOptimizedPicture, getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
-import { isInternal, isCategory, isArticlePage, fetchArticleInfo, fetchArticlesInCategory } from '../../scripts/scripts.js';
+import { isInternal, isCategory, isArticlePage, fetchArticleInfo, fetchArticlesInCategory, requireSubfolderImagePath } from '../../scripts/scripts.js';
 import { addLdJsonScript } from '../../scripts/linking-data.js';
 
 function dateToISOString(input) {
@@ -91,7 +91,6 @@ async function createBlogPostingSchema() {
         '@id': window.location.origin + article.path,
       },
       dateModified: dateToISOString(article.lastModified),
-      datePublished: dateToISOString(article.publishedDate),
       author: {
         '@type': 'Organization',
         name: 'Famous Smoke Shop - Best Cigars Guide',
@@ -99,8 +98,11 @@ async function createBlogPostingSchema() {
         url: 'https://www.famous-smoke.com/best-cigars-guide',
         logo: `${window.location.origin}/best-cigars-guide/icons/famous-smoke-shop-logo.svg`,
       },
-      image: `https://www.famous-smoke.com${article.image}`,
+      image: requireSubfolderImagePath(`https://www.famous-smoke.com${article.image}`),
     };
+    if (article.publishedDate) {
+      blogPosting.datePublished = dateToISOString(article.publishedDate);
+    }
     blogPosting.headline = blogPosting.name;
     blogPostings.push(blogPosting);
   });
@@ -182,10 +184,7 @@ async function buildLdJson(container) {
 
 function getFamousLogo() {
   // Create the image element
-  const picture = createOptimizedPicture(
-    '/best-cigars-guide/icons/famous-smoke-shop-logo-gray.png',
-    'Famous Smoke Shop Logo',
-  );
+  const picture = createOptimizedPicture('/best-cigars-guide/icons/famous-smoke-shop-logo-gray.png', 'Famous Smoke Shop Logo');
   picture.className = 'footer-logo';
   const img = picture.lastElementChild;
   img.width = 120;
