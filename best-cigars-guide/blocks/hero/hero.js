@@ -1,5 +1,7 @@
 /* eslint-disable max-len */
 
+import { requireSubfolderImagePath } from '../../scripts/scripts.js';
+
 // Add second paragraph text and chevron to the hero image when available
 function addSecondParagraphToHero() {
   // Select the div with class 'hero-container'
@@ -68,19 +70,7 @@ function formatPicturePath() {
   const picture = document.querySelector('.hero picture');
   if (picture) {
     picture.querySelectorAll('img, source').forEach((element) => {
-      const url = new URL(element.src || element.srcset, window.location.origin);
-
-      // Check if the pathname begins with "/best-cigars-guide"
-      if (!url.pathname.startsWith('/best-cigars-guide')) {
-        // Prepend "/best-cigars-guide" to the pathname
-        url.pathname = `/best-cigars-guide${url.pathname}`;
-      }
-
-      if (element.tagName === 'IMG') {
-        element.src = url.href;
-      } else if (element.tagName === 'SOURCE') {
-        element.srcset = url.href;
-      }
+      requireSubfolderImagePath(element);
     });
   }
 }

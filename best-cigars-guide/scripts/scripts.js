@@ -5,6 +5,7 @@ import { sampleRUM, buildBlock, loadHeader, loadFooter, decorateButtons, decorat
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 const CATEGORY_INDEX_PATH = '/best-cigars-guide/index/category-index.json';
 const ARTICLE_INDEX_PATH = '/best-cigars-guide/index/query-index.json';
+const SUBFOLDER_PATH = '/best-cigars-guide';
 
 let categoryIndexData;
 let articleIndexData;
@@ -108,6 +109,33 @@ function buildHeroBlock(main) {
   }
 }
 
+/**
+ * require subfolder for image path
+ * works with <image> <picture> <meta> string
+ */
+export function requireSubfolderImagePath(element) {
+  const url = new URL(element.src || element.srcset || element.content || element, window.location.origin);
+
+  // Check if the pathname begins with "/best-cigars-guide"
+  if (!url.pathname.startsWith(SUBFOLDER_PATH)) {
+    // Prepend "/best-cigars-guide" to the pathname
+    url.pathname = `${SUBFOLDER_PATH}${url.pathname}`;
+  }
+
+  if (element.tagName === 'IMG') {
+    element.src = url.href;
+  } else if (element.tagName === 'SOURCE') {
+    element.srcset = url.href;
+  } else if (element.tagName === 'META') {
+    element.content = url.href;
+  }
+
+  return url.href;
+}
+
+/**
+ * check if this is an article page
+ */
 export function isArticlePage() {
   // Select the div with class 'breadcrumb'
   const breadcrumbDiv = document.querySelector('.breadcrumb');
