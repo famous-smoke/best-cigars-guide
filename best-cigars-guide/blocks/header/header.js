@@ -163,7 +163,7 @@ export default async function decorate(block) {
   navTools.innerHTML = searchBox.innerHTML;
 
   // Fix meta image paths
-  document.querySelectorAll('meta[property="og:image:secure_url"], meta[property="og:image"]').forEach((metaImage) => {
+  document.querySelectorAll('meta[property="og:image:secure_url"], meta[property="og:image"], meta[name="twitter:image"]').forEach((metaImage) => {
     requireSubfolderImagePath(metaImage);
   });
 
