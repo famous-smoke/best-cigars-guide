@@ -243,11 +243,24 @@ export function isInternal(path) {
 }
 
 /**
+ * Add hreflang link attribute to head
+ */
+function addHreflang() {
+  const el = document.createElement('link');
+  el.rel = 'alternate';
+  el.hreflang = 'en';
+  el.href = window.location.href;
+
+  document.head.appendChild(el);
+}
+
+/**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
+  addHreflang();
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
