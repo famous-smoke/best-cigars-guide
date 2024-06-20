@@ -214,6 +214,9 @@ export function isInternal(path) {
   }
 }
 
+/**
+ * Add hreflang link attribute to head
+ */
 function addHreflang() {
   const el = document.createElement('link');
   el.rel = 'alternate';
