@@ -1,7 +1,5 @@
 /* eslint-disable max-len */
 
-import { requireSubfolderImagePath } from '../../scripts/scripts.js';
-
 // Add second paragraph text and chevron to the hero image when available
 function addSecondParagraphToHero() {
   // Select the div with class 'hero-container'
@@ -65,17 +63,6 @@ function addSecondParagraphToHero() {
   }
 }
 
-// Format picture path
-function formatPicturePath() {
-  const picture = document.querySelector('.hero picture');
-  if (picture) {
-    picture.querySelectorAll('img, source').forEach((element) => {
-      requireSubfolderImagePath(element);
-    });
-  }
-}
-
 export default function decorate() {
   addSecondParagraphToHero();
-  formatPicturePath();
 }

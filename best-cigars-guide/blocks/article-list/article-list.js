@@ -1,5 +1,4 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
-import { requireSubfolderImagePath } from '../../scripts/scripts.js';
 
 export default function decorate(block) {
   // Add Article list
@@ -78,8 +77,6 @@ export default function decorate(block) {
 
   // format images
   ul.querySelectorAll('img').forEach((img) => {
-    // require subfolder in image path
-    requireSubfolderImagePath(img);
     // optimize image
     img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]));
   });
