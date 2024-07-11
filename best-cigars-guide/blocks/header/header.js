@@ -161,7 +161,6 @@ export default async function decorate(block) {
   `;
   navTools.innerHTML = searchBox.innerHTML;
 
-
   // Wrap it up!
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
