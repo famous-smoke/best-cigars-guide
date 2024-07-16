@@ -1,6 +1,5 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
-import { requireSubfolderImagePath } from '../../scripts/scripts.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
@@ -161,11 +160,6 @@ export default async function decorate(block) {
   </form>
   `;
   navTools.innerHTML = searchBox.innerHTML;
-
-  // Fix meta image paths
-  document.querySelectorAll('meta[property="og:image:secure_url"], meta[property="og:image"], meta[name="twitter:image"]').forEach((metaImage) => {
-    requireSubfolderImagePath(metaImage);
-  });
 
   // Wrap it up!
   const navWrapper = document.createElement('div');
