@@ -1,11 +1,17 @@
 sitemaps:
   pages:
     origin: https://www.famous-smoke.com
-    source: /best-cigars-guide/index/query-index.json
-    destination: /best-cigars-guide/page-sitemap.xml
     lastmod: YYYY-MM-DD
+    languages:
+      en:
+        source: /best-cigars-guide/index/query-index.json
+        destination: /best-cigars-guide/page-sitemap.xml
+        hreflang: en
   category:
     origin: https://www.famous-smoke.com
-    source: /best-cigars-guide/index/category-index.json
-    destination: /best-cigars-guide/category-sitemap.xml
     lastmod: YYYY-MM-DD
+    languages:
+      en:
+        source: /best-cigars-guide/index/category-index.json
+        destination: /best-cigars-guide/category-sitemap.xml
+        hreflang: en
