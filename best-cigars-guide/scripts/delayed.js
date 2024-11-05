@@ -113,7 +113,7 @@ function loadTrueVault() {
 }
 
 // Load Scripts
-if (window.location.hostname !== 'www.famous-smoke.com') {
+if (window.location.hostname === 'www.famous-smoke.com') {
   if (!isGALoaded()) {
     loadGoogleAnalytics();
   }
