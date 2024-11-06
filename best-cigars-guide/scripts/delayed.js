@@ -105,6 +105,7 @@ function loadTrueVault() {
 
   const script = document.createElement('script');
   script.src = 'https://polaris.truevaultcdn.com/static/pc/OTNJF7CVF/polaris.js';
+  script.async = true;
   script.onload = () => {
     // DOMContentLoaded event is required to initialise polaris
     window.document.dispatchEvent(new Event('DOMContentLoaded'));
