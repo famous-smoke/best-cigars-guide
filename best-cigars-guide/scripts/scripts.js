@@ -1,6 +1,21 @@
 /* eslint-disable max-len */
 // eslint-disable-next-line object-curly-newline
-import { buildBlock, loadHeader, loadFooter, decorateButtons, decorateIcons, decorateSections, decorateBlocks, decorateTemplateAndTheme, waitForFirstImage, loadSections, loadSection, loadCSS, decorateBlock } from './aem.js';
+import {
+  buildBlock,
+  loadHeader,
+  loadFooter,
+  decorateButtons,
+  decorateIcons,
+  decorateSections,
+  decorateBlocks,
+  decorateTemplateAndTheme,
+  waitForFirstImage,
+  loadSections,
+  loadSection,
+  loadCSS,
+  decorateBlock,
+  loadBlock
+} from './aem.js';
 
 const CATEGORY_INDEX_PATH = '/best-cigars-guide/index/category-index.json';
 const ARTICLE_INDEX_PATH = '/best-cigars-guide/index/query-index.json';
@@ -181,6 +196,7 @@ function buildSidebarBlock(main) {
     const block = buildBlock('sidebar', '');
     sidebar.append(block);
     decorateBlock(block);
+    loadBlock(block);
 
     container.classList.add('article-wrapper');
     container.append(sidebar);
