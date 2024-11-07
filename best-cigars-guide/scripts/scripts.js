@@ -14,7 +14,7 @@ import {
   loadSection,
   loadCSS,
   decorateBlock,
-  loadBlock
+  loadBlock,
 } from './aem.js';
 
 const CATEGORY_INDEX_PATH = '/best-cigars-guide/index/category-index.json';
