@@ -1,8 +1,22 @@
 /* eslint-disable max-len */
 // eslint-disable-next-line object-curly-newline
-import { sampleRUM, buildBlock, loadHeader, loadFooter, decorateButtons, decorateIcons, decorateSections, decorateBlocks, decorateTemplateAndTheme, waitForLCP, loadBlocks, loadCSS, decorateBlock } from './aem.js';
+import {
+  buildBlock,
+  loadHeader,
+  loadFooter,
+  decorateButtons,
+  decorateIcons,
+  decorateSections,
+  decorateBlocks,
+  decorateTemplateAndTheme,
+  waitForFirstImage,
+  loadSections,
+  loadSection,
+  loadCSS,
+  decorateBlock,
+  loadBlock,
+} from './aem.js';
 
-const LCP_BLOCKS = []; // add your LCP blocks to the list
 const CATEGORY_INDEX_PATH = '/best-cigars-guide/index/category-index.json';
 const ARTICLE_INDEX_PATH = '/best-cigars-guide/index/query-index.json';
 const SUBFOLDER_PATH = '/best-cigars-guide';
@@ -182,6 +196,7 @@ function buildSidebarBlock(main) {
     const block = buildBlock('sidebar', '');
     sidebar.append(block);
     decorateBlock(block);
+    loadBlock(block);
 
     container.classList.add('article-wrapper');
     container.append(sidebar);
@@ -243,30 +258,17 @@ export function isInternal(path) {
 }
 
 /**
- * Add hreflang link attribute to head
- */
-function addHreflang() {
-  const el = document.createElement('link');
-  el.rel = 'alternate';
-  el.hreflang = 'en';
-  el.href = window.location.href;
-
-  document.head.appendChild(el);
-}
-
-/**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
-  addHreflang();
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');
-    await waitForLCP(LCP_BLOCKS);
+    await loadSection(main.querySelector('.section'), waitForFirstImage);
   }
 
   try {
@@ -285,7 +287,7 @@ async function loadEager(doc) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
-  await loadBlocks(main);
+  await loadSections(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
@@ -296,10 +298,6 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
-
-  sampleRUM('lazy');
-  sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
-  sampleRUM.observe(main.querySelectorAll('picture > img'));
 }
 
 /**

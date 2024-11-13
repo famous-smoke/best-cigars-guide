@@ -5,8 +5,8 @@ Find the best recommended Cigars by year, occasion, shape, size, country, food p
 - https://www.famous-smoke.com/best-cigars-guide/
 
 ## AEM Preview Environments
-- Preview: https://main--best-cigars-guide--famous-smoke.hlx.page/best-cigars-guide
-- Live: https://main--best-cigars-guide--famous-smoke.hlx.live/best-cigars-guide
+- Preview: https://main--best-cigars-guide--famous-smoke.aem.page/best-cigars-guide
+- Live: https://main--best-cigars-guide--famous-smoke.aem.live/best-cigars-guide
 
 ## Installation
 
@@ -27,4 +27,4 @@ npm run lint
 1. Install the [AEM CLI](https://github.com/adobe/helix-cli): `npm install -g @adobe/aem-cli`
 1. Start AEM Proxy: `aem up` (opens your browser at `http://localhost:3000`)
 1. Open the `best-cigars-guide` directory in your favorite IDE and start coding :)
-1. Once you are are ready to push your changes, simply use Git to add, commit, and push and your code to your preview `https://<branch>--<repo>--<owner>.hlx.page/` and production `https://<branch>--<repo>--<owner>.hlx.live/` sites.
+1. Once you are are ready to push your changes, simply use Git to add, commit, and push and your code to your preview `https://<branch>--<repo>--<owner>.aem.page/` and production `https://<branch>--<repo>--<owner>.aem.live/` sites.
